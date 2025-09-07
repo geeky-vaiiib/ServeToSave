@@ -4,33 +4,72 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { ArrowRight, Building, Check, Leaf, MapPin, User, Utensils } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { useAuth } from "@/lib/auth-context"
 
 export default function GetStartedPage() {
   const [step, setStep] = useState(1)
   const [accountType, setAccountType] = useState("individual")
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    role: "Individual Donor"
+  })
+
+  const { signup } = useAuth()
+  const router = useRouter()
 
   const handleNext = () => {
     setStep(step + 1)
     window.scrollTo(0, 0)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError(null)
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      // Validate passwords match
+      if (formData.password !== formData.confirmPassword) {
+        throw new Error("Passwords do not match")
+      }
+
+      // Map account type to role
+      let role = "Individual Donor"
+      if (accountType === "ngo") role = "NGO"
+      else if (accountType === "restaurant") role = "Recipient"
+      else if (accountType === "corporate") role = "Individual Donor"
+
+      await signup({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+        role: role
+      })
+
+      setStep(4) // Success step
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Signup failed')
+    } finally {
       setIsLoading(false)
-      // In a real app, you would redirect after successful registration
-      window.location.href = "/dashboard"
-    }, 1500)
+    }
   }
 
   return (
@@ -431,20 +470,66 @@ export default function GetStartedPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  {error && (
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                      {error}
+                    </div>
+                  )}
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName">First Name</Label>
+                    <Input
+                      id="firstName"
+                      type="text"
+                      placeholder="Your first name"
+                      value={formData.firstName}
+                      onChange={(e) => handleInputChange('firstName', e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName">Last Name</Label>
+                    <Input
+                      id="lastName"
+                      type="text"
+                      placeholder="Your last name"
+                      value={formData.lastName}
+                      onChange={(e) => handleInputChange('lastName', e.target.value)}
+                      required
+                    />
+                  </div>
                   <div className="space-y-2">
                     <Label htmlFor="email-verify">Email</Label>
-                    <Input id="email-verify" type="email" placeholder="Your email address" required />
+                    <Input
+                      id="email-verify"
+                      type="email"
+                      placeholder="Your email address"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      required
+                    />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="password">Create Password</Label>
-                    <Input id="password" type="password" required />
+                    <Input
+                      id="password"
+                      type="password"
+                      value={formData.password}
+                      onChange={(e) => handleInputChange('password', e.target.value)}
+                      required
+                    />
                     <p className="text-xs text-muted-foreground">
                       Password must be at least 8 characters long and include a number and a special character
                     </p>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="confirm-password">Confirm Password</Label>
-                    <Input id="confirm-password" type="password" required />
+                    <Input
+                      id="confirm-password"
+                      type="password"
+                      value={formData.confirmPassword}
+                      onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                      required
+                    />
                   </div>
 
                   {(accountType === "restaurant" || accountType === "ngo" || accountType === "corporate") && (

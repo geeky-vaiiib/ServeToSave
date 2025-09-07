@@ -16,11 +16,14 @@ const refreshTokens = new Set();
  */
 router.post('/signup',
   authRateLimit,
-  authValidators.signup,
-  handleValidationErrors,
   async (req, res) => {
     try {
-      const { email, password, name, role, organization, location } = req.body;
+      const { firstName, lastName, email, password, role } = req.body;
+
+      // Basic validation
+      if (!firstName || !lastName || !email || !password || !role) {
+        return res.status(400).json({ message: 'All fields are required' });
+      }
 
       // Check if user already exists
       const existingUser = await User.findOne({ email });
@@ -30,16 +33,15 @@ router.post('/signup',
 
       // Hash password
       const saltRounds = 12;
-      const passwordHash = await bcrypt.hash(password, saltRounds);
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
 
       // Create user
       const userData = {
+        firstName,
+        lastName,
         email,
-        passwordHash,
-        name,
-        role: role || 'donor',
-        organization,
-        location
+        password: hashedPassword,
+        role
       };
 
       const user = new User(userData);
@@ -54,11 +56,12 @@ router.post('/signup',
 
       // Remove password from response
       const userResponse = user.toObject();
-      delete userResponse.passwordHash;
+      delete userResponse.password;
 
       res.status(201).json({
         message: 'User created successfully',
         user: userResponse,
+        token: accessToken,
         accessToken,
         refreshToken
       });
@@ -77,20 +80,23 @@ router.post('/signup',
  */
 router.post('/login',
   authRateLimit,
-  authValidators.login,
-  handleValidationErrors,
   async (req, res) => {
     try {
       const { email, password } = req.body;
 
-      // Find user by email
-      const user = await User.findOne({ email });
+      // Basic validation
+      if (!email || !password) {
+        return res.status(400).json({ message: 'Email and password are required' });
+      }
+
+      // Find user by email and include password field
+      const user = await User.findOne({ email }).select('+password');
       if (!user) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
 
       // Check password
-      const isValidPassword = await bcrypt.compare(password, user.passwordHash);
+      const isValidPassword = await bcrypt.compare(password, user.password);
       if (!isValidPassword) {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
@@ -104,11 +110,12 @@ router.post('/login',
 
       // Remove password from response
       const userResponse = user.toObject();
-      delete userResponse.passwordHash;
+      delete userResponse.password;
 
       res.json({
         message: 'Login successful',
         user: userResponse,
+        token: accessToken,
         accessToken,
         refreshToken
       });

@@ -22,13 +22,18 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="mx-auto flex w-full items-center justify-center lg:justify-end">
-              <Image
-                src="/placeholder.svg?height=400&width=600"
-                width={600}
-                height={400}
-                alt="Serve To Save India team"
-                className="rounded-lg object-cover shadow-xl"
-              />
+              <div className="relative w-full max-w-[600px] h-[400px] bg-gradient-to-br from-blue-100 to-green-200 dark:from-blue-900/20 dark:to-green-800/20 rounded-lg shadow-xl flex items-center justify-center">
+                <div className="text-center p-8">
+                  <div className="flex justify-center mb-4">
+                    <div className="relative">
+                      <Users className="h-20 w-20 text-blue-600 dark:text-blue-400" />
+                      <Leaf className="h-8 w-8 text-green-600 dark:text-green-400 absolute -bottom-1 -right-1" />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-blue-800 dark:text-blue-200 mb-2">Our Team</h3>
+                  <p className="text-blue-700 dark:text-blue-300">Dedicated to ending food waste and hunger</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -392,13 +397,27 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="relative">
-              <Image
-                src="/placeholder.svg?height=500&width=600"
-                width={600}
-                height={500}
-                alt="Food waste and hunger problem visualization"
-                className="rounded-lg shadow-lg"
-              />
+              <div className="w-full max-w-[600px] h-[500px] bg-gradient-to-br from-orange-100 to-red-200 dark:from-orange-900/20 dark:to-red-800/20 rounded-lg shadow-lg flex items-center justify-center">
+                <div className="text-center p-8">
+                  <div className="flex justify-center mb-6">
+                    <div className="relative">
+                      <div className="flex items-center gap-4">
+                        <div className="text-center">
+                          <Utensils className="h-16 w-16 text-orange-600 dark:text-orange-400 mx-auto mb-2" />
+                          <p className="text-sm text-orange-700 dark:text-orange-300">Food Waste</p>
+                        </div>
+                        <ArrowRight className="h-8 w-8 text-gray-600 dark:text-gray-400" />
+                        <div className="text-center">
+                          <Heart className="h-16 w-16 text-red-600 dark:text-red-400 mx-auto mb-2" />
+                          <p className="text-sm text-red-700 dark:text-red-300">Hunger Relief</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">The Problem We Solve</h3>
+                  <p className="text-gray-700 dark:text-gray-300">Transforming food waste into hunger relief</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

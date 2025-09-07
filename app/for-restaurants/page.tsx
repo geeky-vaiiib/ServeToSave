@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Award, BarChart, Clock, DollarSign, Heart, Leaf, MapPin, Star, Utensils } from "lucide-react"
+import { ArrowRight, Award, BarChart, Building, Clock, DollarSign, Heart, Leaf, MapPin, Star, TrendingUp, Utensils } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -37,13 +37,18 @@ export default function ForRestaurantsPage() {
               </div>
             </div>
             <div className="mx-auto flex w-full items-center justify-center lg:justify-end">
-              <Image
-                src="/placeholder.svg?height=400&width=600"
-                width={600}
-                height={400}
-                alt="Restaurant donating food"
-                className="rounded-lg object-cover shadow-xl"
-              />
+              <div className="relative w-full max-w-[600px] h-[400px] bg-gradient-to-br from-orange-100 to-yellow-200 dark:from-orange-900/20 dark:to-yellow-800/20 rounded-lg shadow-xl flex items-center justify-center">
+                <div className="text-center p-8">
+                  <div className="flex justify-center mb-4">
+                    <div className="relative">
+                      <Building className="h-20 w-20 text-orange-600 dark:text-orange-400" />
+                      <Utensils className="h-8 w-8 text-yellow-600 dark:text-yellow-400 absolute -top-1 -right-1" />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-orange-800 dark:text-orange-200 mb-2">Restaurant Partners</h3>
+                  <p className="text-orange-700 dark:text-orange-300">Reducing waste, feeding communities</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -231,13 +236,12 @@ export default function ForRestaurantsPage() {
 
             <Card className="flex flex-col">
               <div className="relative">
-                <Image
-                  src="/placeholder.svg?height=200&width=400"
-                  width={400}
-                  height={200}
-                  alt="Restaurant 2"
-                  className="rounded-t-lg object-cover w-full h-48"
-                />
+                <div className="w-full h-48 bg-gradient-to-br from-green-100 to-blue-200 dark:from-green-900/20 dark:to-blue-800/20 rounded-t-lg flex items-center justify-center">
+                  <div className="text-center">
+                    <Building className="h-12 w-12 text-green-600 dark:text-green-400 mx-auto mb-2" />
+                    <p className="text-sm text-green-700 dark:text-green-300 font-medium">Spice Garden</p>
+                  </div>
+                </div>
                 <Badge className="absolute top-3 right-3 bg-green-600">Featured Partner</Badge>
               </div>
               <CardHeader>
@@ -265,13 +269,12 @@ export default function ForRestaurantsPage() {
 
             <Card className="flex flex-col">
               <div className="relative">
-                <Image
-                  src="/placeholder.svg?height=200&width=400"
-                  width={400}
-                  height={200}
-                  alt="Restaurant 3"
-                  className="rounded-t-lg object-cover w-full h-48"
-                />
+                <div className="w-full h-48 bg-gradient-to-br from-blue-100 to-green-200 dark:from-blue-900/20 dark:to-green-800/20 rounded-t-lg flex items-center justify-center">
+                  <div className="text-center">
+                    <Leaf className="h-12 w-12 text-green-600 dark:text-green-400 mx-auto mb-2" />
+                    <p className="text-sm text-green-700 dark:text-green-300 font-medium">Green Leaf Cafe</p>
+                  </div>
+                </div>
                 <Badge className="absolute top-3 right-3 bg-green-600">Featured Partner</Badge>
               </div>
               <CardHeader>
@@ -603,13 +606,32 @@ export default function ForRestaurantsPage() {
               </div>
             </div>
             <div className="relative">
-              <Image
-                src="/placeholder.svg?height=500&width=600"
-                width={600}
-                height={500}
-                alt="Food pickup logistics"
-                className="rounded-lg shadow-lg"
-              />
+              <div className="w-full max-w-[600px] h-[500px] bg-gradient-to-br from-purple-100 to-blue-200 dark:from-purple-900/20 dark:to-blue-800/20 rounded-lg shadow-lg flex items-center justify-center">
+                <div className="text-center p-8">
+                  <div className="flex justify-center mb-6">
+                    <div className="relative">
+                      <div className="flex items-center gap-6">
+                        <div className="text-center">
+                          <Building className="h-12 w-12 text-purple-600 dark:text-purple-400 mx-auto mb-2" />
+                          <p className="text-sm text-purple-700 dark:text-purple-300">Restaurant</p>
+                        </div>
+                        <ArrowRight className="h-6 w-6 text-gray-600 dark:text-gray-400" />
+                        <div className="text-center">
+                          <TrendingUp className="h-12 w-12 text-blue-600 dark:text-blue-400 mx-auto mb-2" />
+                          <p className="text-sm text-blue-700 dark:text-blue-300">Logistics</p>
+                        </div>
+                        <ArrowRight className="h-6 w-6 text-gray-600 dark:text-gray-400" />
+                        <div className="text-center">
+                          <Heart className="h-12 w-12 text-red-600 dark:text-red-400 mx-auto mb-2" />
+                          <p className="text-sm text-red-700 dark:text-red-300">Community</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">Seamless Logistics</h3>
+                  <p className="text-gray-700 dark:text-gray-300">From pickup to delivery, we handle everything</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

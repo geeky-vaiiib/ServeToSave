@@ -360,13 +360,9 @@ export default function ForNGOsPage() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <Image
-                    src="/placeholder.svg?height=60&width=60"
-                    width={60}
-                    height={60}
-                    alt="Hope Foundation"
-                    className="rounded-full"
-                  />
+                  <div className="w-[60px] h-[60px] bg-gradient-to-br from-green-100 to-blue-200 dark:from-green-900/20 dark:to-blue-800/20 rounded-full flex items-center justify-center">
+                    <Heart className="h-8 w-8 text-green-600 dark:text-green-400" />
+                  </div>
                   <div>
                     <h3 className="font-bold">Hope Foundation</h3>
                     <p className="text-sm text-muted-foreground">Mumbai</p>
@@ -389,13 +385,9 @@ export default function ForNGOsPage() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <Image
-                    src="/placeholder.svg?height=60&width=60"
-                    width={60}
-                    height={60}
-                    alt="Food For All"
-                    className="rounded-full"
-                  />
+                  <div className="w-[60px] h-[60px] bg-gradient-to-br from-blue-100 to-purple-200 dark:from-blue-900/20 dark:to-purple-800/20 rounded-full flex items-center justify-center">
+                    <Users className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                  </div>
                   <div>
                     <h3 className="font-bold">Food For All</h3>
                     <p className="text-sm text-muted-foreground">Delhi</p>
@@ -417,13 +409,9 @@ export default function ForNGOsPage() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <Image
-                    src="/placeholder.svg?height=60&width=60"
-                    width={60}
-                    height={60}
-                    alt="Child Care Trust"
-                    className="rounded-full"
-                  />
+                  <div className="w-[60px] h-[60px] bg-gradient-to-br from-purple-100 to-pink-200 dark:from-purple-900/20 dark:to-pink-800/20 rounded-full flex items-center justify-center">
+                    <Shield className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                  </div>
                   <div>
                     <h3 className="font-bold">Child Care Trust</h3>
                     <p className="text-sm text-muted-foreground">Bangalore</p>

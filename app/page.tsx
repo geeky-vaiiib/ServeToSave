@@ -53,13 +53,18 @@ export default function Home() {
               </div>
             </div>
             <div className="mx-auto flex w-full items-center justify-center lg:justify-end">
-              <Image
-                src="/placeholder.svg?height=400&width=600"
-                width={600}
-                height={400}
-                alt="Food donation illustration"
-                className="rounded-lg object-cover shadow-xl"
-              />
+              <div className="relative w-full max-w-[600px] h-[400px] bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/20 dark:to-green-800/20 rounded-lg shadow-xl flex items-center justify-center">
+                <div className="text-center p-8">
+                  <div className="flex justify-center mb-4">
+                    <div className="relative">
+                      <Utensils className="h-24 w-24 text-green-600 dark:text-green-400" />
+                      <Heart className="h-8 w-8 text-red-500 absolute -top-2 -right-2" />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-green-800 dark:text-green-200 mb-2">Food Redistribution</h3>
+                  <p className="text-green-700 dark:text-green-300">Connecting surplus food with those in need</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

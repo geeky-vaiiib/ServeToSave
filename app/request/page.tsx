@@ -298,13 +298,9 @@ export default function RequestPage() {
               <div className="bg-green-50 rounded-lg p-6">
                 <h3 className="text-xl font-bold mb-4">Success Story</h3>
                 <div className="flex items-center gap-4 mb-4">
-                  <Image
-                    src="/placeholder.svg?height=60&width=60"
-                    width={60}
-                    height={60}
-                    alt="Hope Foundation"
-                    className="rounded-full"
-                  />
+                  <div className="w-[60px] h-[60px] bg-gradient-to-br from-green-100 to-blue-200 dark:from-green-900/20 dark:to-blue-800/20 rounded-full flex items-center justify-center">
+                    <Heart className="h-8 w-8 text-green-600 dark:text-green-400" />
+                  </div>
                   <div>
                     <h4 className="font-bold">Hope Foundation</h4>
                     <p className="text-sm text-muted-foreground">Delhi</p>

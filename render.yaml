@@ -1,0 +1,57 @@
+services:
+  # Backend API Service
+  - type: web
+    name: serve-to-save-backend
+    env: node
+    buildCommand: cd Backend && npm install
+    startCommand: cd Backend && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: serve-to-save-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 24h
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: 7d
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: serve-to-save-frontend
+          property: host
+      - key: MAX_FILE_SIZE
+        value: 5242880
+      - key: UPLOAD_PATH
+        value: ./uploads
+
+  # Frontend Service
+  - type: web
+    name: serve-to-save-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./out
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: serve-to-save-backend
+          property: host
+      - key: NEXT_PUBLIC_SITE_URL
+        fromService:
+          type: web
+          name: serve-to-save-frontend
+          property: host
+
+databases:
+  - name: serve-to-save-db
+    databaseName: serve-to-save
+    user: serve-to-save-user

@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:6.0
+    container_name: serve-to-save-db
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: serve-to-save
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./Backend/scripts/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - serve-to-save-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: serve-to-save-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+      MONGODB_URI: mongodb://admin:password123@mongodb:27017/serve-to-save?authSource=admin
+      JWT_SECRET: your-super-secret-jwt-key-for-development
+      JWT_REFRESH_SECRET: your-refresh-secret-for-development
+      FRONTEND_URL: http://localhost:3000
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./Backend:/app
+      - /app/node_modules
+      - backend_uploads:/app/uploads
+    depends_on:
+      - mongodb
+    networks:
+      - serve-to-save-network
+
+  # Frontend (Next.js)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: serve-to-save-frontend
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:5000/api
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - backend
+    networks:
+      - serve-to-save-network
+
+volumes:
+  mongodb_data:
+  backend_uploads:
+
+networks:
+  serve-to-save-network:
+    driver: bridge

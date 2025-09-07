@@ -174,7 +174,6 @@ export default function AboutPage() {
               <p className="text-sm text-muted-foreground">
                 Student at Siddaganga Institute of Technology with expertise in AI and web development.
               </p>
-              <p className="text-xs text-gray-500 mt-1">1SI23IS117</p>
             </div>
             <div className="flex flex-col items-center text-center">
               <div className="mb-4 overflow-hidden rounded-full">
@@ -191,7 +190,6 @@ export default function AboutPage() {
               <p className="text-sm text-muted-foreground">
                 Creative designer with a passion for creating intuitive and accessible user experiences.
               </p>
-              <p className="text-xs text-gray-500 mt-1">1SI23CI065</p>
             </div>
             <div className="flex flex-col items-center text-center">
               <div className="mb-4 overflow-hidden rounded-full">
@@ -208,7 +206,6 @@ export default function AboutPage() {
               <p className="text-sm text-muted-foreground">
                 Skilled in database management and API development for seamless data flow.
               </p>
-              <p className="text-xs text-gray-500 mt-1">1SI23CI029</p>
             </div>
             <div className="flex flex-col items-center text-center">
               <div className="mb-4 overflow-hidden rounded-full">
@@ -216,16 +213,15 @@ export default function AboutPage() {
                   src="/placeholder.svg?height=200&width=200"
                   width={200}
                   height={200}
-                  alt="Tarun S Muragodnavar"
+                  alt="K Chandan Jaysimha"
                   className="object-cover"
                 />
               </div>
-              <h3 className="text-xl font-bold">Tarun S Muragodnavar</h3>
+              <h3 className="text-xl font-bold">K Chandan Jaysimha</h3>
               <p className="text-sm text-green-600 mb-2">AI Integration Specialist</p>
               <p className="text-sm text-muted-foreground">
                 Expert in machine learning algorithms and AI-powered matching systems.
               </p>
-              <p className="text-xs text-gray-500 mt-1">1SI23IS114</p>
             </div>
           </div>
 
@@ -489,12 +485,12 @@ export default function AboutPage() {
                     d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
                   />
                 </svg>
-                <CardTitle>Google Maps API</CardTitle>
+                <CardTitle>Interactive Maps</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground text-center">
-                  Our integration with Google Maps API provides real-time visualization of donation and request
-                  locations, making it easy to identify nearby opportunities.
+                  Our interactive mapping system provides real-time visualization of donation and request
+                  locations, making it easy to identify nearby opportunities using OpenStreetMap.
                 </p>
               </CardContent>
             </Card>

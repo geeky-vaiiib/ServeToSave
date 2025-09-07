@@ -3,9 +3,66 @@
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import dynamic from "next/dynamic"
+
+// Dynamically import the map component to avoid SSR issues
+const LeafletMap = dynamic(() => import('./leaflet-map'), {
+  ssr: false,
+  loading: () => <div className="w-full h-[500px] bg-gray-200 rounded-xl flex items-center justify-center">
+    <p>Loading map...</p>
+  </div>
+})
 
 const HeroMapSection = () => {
   const [activeFilter, setActiveFilter] = useState("all")
+
+  // Sample data for demonstration
+  const sampleMarkers = [
+    {
+      id: '1',
+      lat: 28.6139,
+      lng: 77.2090,
+      title: 'Hotel Grand Palace',
+      description: 'Vegetarian buffet for 50 people',
+      type: 'donation' as const
+    },
+    {
+      id: '2',
+      lat: 19.0760,
+      lng: 72.8777,
+      title: 'Hope Foundation',
+      description: 'Urgent need for 30 meals',
+      type: 'request' as const
+    },
+    {
+      id: '3',
+      lat: 13.0827,
+      lng: 80.2707,
+      title: 'Green Restaurant',
+      description: 'Daily surplus food available',
+      type: 'donation' as const
+    },
+    {
+      id: '4',
+      lat: 22.5726,
+      lng: 88.3639,
+      title: 'Care Center',
+      description: 'Food for elderly residents',
+      type: 'request' as const
+    },
+    {
+      id: '5',
+      lat: 12.9716,
+      lng: 77.5946,
+      title: 'Tech Cafeteria',
+      description: 'Successfully donated to local NGO',
+      type: 'completed' as const
+    }
+  ]
+
+  const filteredMarkers = activeFilter === 'all'
+    ? sampleMarkers
+    : sampleMarkers.filter(marker => marker.type === activeFilter)
 
   return (
     <section className="py-12 md:py-24 bg-gray-50">
@@ -50,15 +107,14 @@ const HeroMapSection = () => {
           </Button>
         </div>
         <div className="mt-6 relative w-full h-[500px] rounded-xl overflow-hidden border shadow-md">
-          {/* This would be replaced with an actual Google Maps integration */}
-          <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
-            <div className="text-center">
-              <p className="text-lg font-medium">Google Maps Integration</p>
-              <p className="text-sm text-gray-500">
-                Real-time food donation and request visualization would appear here
-              </p>
-            </div>
-          </div>
+          <LeafletMap
+            markers={filteredMarkers}
+            height="500px"
+            onMarkerClick={(marker) => {
+              console.log('Marker clicked:', marker)
+              // Handle marker click - could open a modal or navigate to details
+            }}
+          />
 
           {/* Sample cards that would overlay on map */}
           <div className="absolute top-10 left-10">

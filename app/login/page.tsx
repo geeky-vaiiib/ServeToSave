@@ -30,7 +30,7 @@ export default function LoginPage() {
 
     try {
       await login(email, password)
-      router.push("/") // Redirect to home page after successful login
+      router.push("/dashboard") // Redirect to dashboard after successful login
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Login failed')
     } finally {
@@ -43,7 +43,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-8">
         <div className="flex flex-col items-center justify-center text-center">
           <Link href="/" className="flex items-center gap-2">
-            <Leaf className="h-8 w-8 text-green-600" />
+            <img src="/logo.svg" alt="Serve To Save India" className="h-10 w-10" />
             <span className="text-2xl font-bold">Serve To Save India</span>
           </Link>
           <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">Welcome back</h2>

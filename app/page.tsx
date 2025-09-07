@@ -11,11 +11,11 @@ export default function Home() {
   return (
     <div>
       {/* Hero section */}
-      <section className="bg-gradient-to-b from-green-50 to-white">
+      <section className="bg-gradient-to-b from-green-50 to-white dark:from-green-950/20 dark:to-background">
         <div className="container px-4 md:px-6 pt-16 pb-12 md:pt-24 md:pb-20">
           <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
             <div className="flex flex-col justify-center space-y-4">
-              <div className="inline-block rounded-lg bg-green-100 px-3 py-1 text-sm text-green-800">
+              <div className="inline-block rounded-lg bg-green-100 dark:bg-green-900/30 px-3 py-1 text-sm text-green-800 dark:text-green-400">
                 Join the Movement
               </div>
               <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
@@ -69,11 +69,11 @@ export default function Home() {
       <ImpactCounter />
 
       {/* How it works */}
-      <section className="py-12 md:py-24 bg-white">
+      <section className="py-12 md:py-24 bg-background">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <div className="inline-block rounded-lg bg-green-100 px-3 py-1 text-sm text-green-800">Our Process</div>
+              <div className="inline-block rounded-lg bg-green-100 dark:bg-green-900/30 px-3 py-1 text-sm text-green-800 dark:text-green-400">Our Process</div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">How It Works</h2>
               <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Our platform makes food donation and distribution simple, efficient, and transparent.
@@ -82,7 +82,7 @@ export default function Home() {
           </div>
           <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 md:grid-cols-3 md:gap-12">
             <div className="grid gap-2 text-center">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
                 <Utensils className="h-8 w-8 text-green-600" />
               </div>
               <h3 className="text-xl font-bold">Donate Food</h3>
@@ -91,7 +91,7 @@ export default function Home() {
               </p>
             </div>
             <div className="grid gap-2 text-center">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
                 <MapPin className="h-8 w-8 text-green-600" />
               </div>
               <h3 className="text-xl font-bold">Smart Matching</h3>
@@ -100,7 +100,7 @@ export default function Home() {
               </p>
             </div>
             <div className="grid gap-2 text-center">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
                 <Heart className="h-8 w-8 text-green-600" />
               </div>
               <h3 className="text-xl font-bold">Feed Communities</h3>
@@ -116,11 +116,11 @@ export default function Home() {
       <HeroMapSection />
 
       {/* Subscription Plans */}
-      <section className="py-12 md:py-24 bg-gray-50">
+      <section className="py-12 md:py-24 bg-muted/30">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <div className="inline-block rounded-lg bg-green-100 px-3 py-1 text-sm text-green-800">
+              <div className="inline-block rounded-lg bg-green-100 dark:bg-green-900/30 px-3 py-1 text-sm text-green-800 dark:text-green-400">
                 Freemium Plans
               </div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Choose Your Plan</h2>
@@ -164,8 +164,8 @@ export default function Home() {
 
             {/* Pro Plan */}
             <Card className="flex flex-col border-green-600 shadow-md">
-              <CardHeader className="flex flex-col space-y-1.5 pb-4 bg-green-50 rounded-t-lg">
-                <div className="inline-block rounded-lg bg-green-100 px-3 py-1 text-sm text-green-800 self-start">
+              <CardHeader className="flex flex-col space-y-1.5 pb-4 bg-green-50 dark:bg-green-900/20 rounded-t-lg">
+                <div className="inline-block rounded-lg bg-green-100 dark:bg-green-900/30 px-3 py-1 text-sm text-green-800 dark:text-green-400 self-start">
                   Popular
                 </div>
                 <CardTitle className="text-2xl font-bold">Pro</CardTitle>
@@ -239,11 +239,11 @@ export default function Home() {
       </section>
 
       {/* Partnerships Section */}
-      <section className="py-12 md:py-24 bg-white">
+      <section className="py-12 md:py-24 bg-background">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <div className="inline-block rounded-lg bg-green-100 px-3 py-1 text-sm text-green-800">Partnerships</div>
+              <div className="inline-block rounded-lg bg-green-100 dark:bg-green-900/30 px-3 py-1 text-sm text-green-800 dark:text-green-400">Partnerships</div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
                 CSR & Corporate Partnerships
               </h2>
@@ -324,11 +324,11 @@ export default function Home() {
       <TestimonialSection />
 
       {/* Support Us */}
-      <section className="py-12 md:py-24 bg-green-50">
+      <section className="py-12 md:py-24 bg-green-50 dark:bg-green-950/20">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <div className="inline-block rounded-lg bg-green-100 px-3 py-1 text-sm text-green-800">
+              <div className="inline-block rounded-lg bg-green-100 dark:bg-green-900/30 px-3 py-1 text-sm text-green-800 dark:text-green-400">
                 Support Our Mission
               </div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Help Us Feed More</h2>
@@ -380,12 +380,12 @@ export default function Home() {
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
               <Link href="/donate" passHref>
-                <Button size="lg" className="bg-white text-green-600 hover:bg-gray-100">
+                <Button size="lg" className="bg-white dark:bg-card text-green-600 hover:bg-gray-100 dark:hover:bg-card/80">
                   Donate Food
                 </Button>
               </Link>
               <Link href="/request" passHref>
-                <Button size="lg" variant="outline" className="text-white border-white hover:bg-green-700">
+                <Button size="lg" variant="outline" className="text-green-800 dark:text-green-400 border-green-800 dark:border-green-400 hover:bg-green-700 dark:hover:bg-green-900/30">
                   Request Food
                 </Button>
               </Link>

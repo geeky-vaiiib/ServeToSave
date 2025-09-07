@@ -10,10 +10,91 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Filter, Heart, MapPin, Search, Utensils } from "lucide-react"
 import Link from "next/link"
+import dynamic from "next/dynamic"
+
+// Dynamically import the map component to avoid SSR issues
+const LeafletMap = dynamic(() => import('@/components/leaflet-map'), {
+  ssr: false,
+  loading: () => <div className="w-full h-[600px] bg-gray-200 rounded-xl flex items-center justify-center">
+    <p>Loading map...</p>
+  </div>
+})
 
 export default function MapPage() {
   const [activeFilter, setActiveFilter] = useState("all")
   const [showFilters, setShowFilters] = useState(false)
+
+  // Extended sample data for the map page
+  const sampleMarkers = [
+    {
+      id: '1',
+      lat: 28.6139,
+      lng: 77.2090,
+      title: 'Hotel Grand Palace',
+      description: 'Vegetarian buffet for 50 people - Available for 4 hours',
+      type: 'donation' as const
+    },
+    {
+      id: '2',
+      lat: 19.0760,
+      lng: 72.8777,
+      title: 'Hope Foundation',
+      description: 'Urgent need for 30 meals - High priority',
+      type: 'request' as const
+    },
+    {
+      id: '3',
+      lat: 13.0827,
+      lng: 80.2707,
+      title: 'Green Restaurant',
+      description: 'Daily surplus food available - Mixed cuisine',
+      type: 'donation' as const
+    },
+    {
+      id: '4',
+      lat: 22.5726,
+      lng: 88.3639,
+      title: 'Care Center',
+      description: 'Food needed for elderly residents',
+      type: 'request' as const
+    },
+    {
+      id: '5',
+      lat: 12.9716,
+      lng: 77.5946,
+      title: 'Tech Cafeteria',
+      description: 'Successfully donated to local NGO',
+      type: 'completed' as const
+    },
+    {
+      id: '6',
+      lat: 26.9124,
+      lng: 75.7873,
+      title: 'Royal Kitchen',
+      description: 'Wedding surplus - Serves 100 people',
+      type: 'donation' as const
+    },
+    {
+      id: '7',
+      lat: 21.1458,
+      lng: 79.0882,
+      title: 'Helping Hands NGO',
+      description: 'Emergency food required for flood victims',
+      type: 'request' as const
+    },
+    {
+      id: '8',
+      lat: 23.0225,
+      lng: 72.5714,
+      title: 'Community Kitchen',
+      description: 'Daily meal distribution completed',
+      type: 'completed' as const
+    }
+  ]
+
+  const filteredMarkers = activeFilter === 'all'
+    ? sampleMarkers
+    : sampleMarkers.filter(marker => marker.type === activeFilter)
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -317,15 +398,14 @@ export default function MapPage() {
 
             {/* Map */}
             <div className="relative w-full h-[600px] rounded-xl overflow-hidden border shadow-md">
-              {/* This would be replaced with an actual Google Maps integration */}
-              <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
-                <div className="text-center">
-                  <p className="text-lg font-medium">Google Maps Integration</p>
-                  <p className="text-sm text-gray-500">
-                    Real-time food donation and request visualization would appear here
-                  </p>
-                </div>
-              </div>
+              <LeafletMap
+                markers={filteredMarkers}
+                height="600px"
+                onMarkerClick={(marker) => {
+                  console.log('Marker clicked:', marker)
+                  // Handle marker click - could open a modal or navigate to details
+                }}
+              />
 
               {/* Filter buttons that would overlay on map */}
               <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 bg-white rounded-full shadow-md p-1">

@@ -24,7 +24,7 @@ export default function GetStartedPage() {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "Individual Donor"
+    role: "donor"
   })
 
   const { signup } = useAuth()
@@ -51,10 +51,10 @@ export default function GetStartedPage() {
       }
 
       // Map account type to role
-      let role = "Individual Donor"
-      if (accountType === "ngo") role = "NGO"
-      else if (accountType === "restaurant") role = "Recipient"
-      else if (accountType === "corporate") role = "Individual Donor"
+      let role = "donor"
+      if (accountType === "ngo") role = "ngo"
+      else if (accountType === "restaurant") role = "donor" // Restaurants are donors
+      else if (accountType === "corporate") role = "donor" // Corporate partners are donors
 
       await signup({
         firstName: formData.firstName,

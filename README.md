@@ -1,279 +1,193 @@
-# Serve To Save India
+Serve To Save India
 
-A comprehensive food redistribution platform that connects food donors with NGOs and communities in need, powered by AI and modern web technologies.
+Serve To Save India is a food redistribution platform that connects donors with NGOs and communities in need. It leverages AI and modern web technologies to reduce food waste and fight hunger.
 
-## 🌟 Features
+Features
 
-- **Smart Food Donation System**: Easy-to-use forms for restaurants, hotels, and individuals to donate surplus food
-- **NGO Request Management**: Streamlined process for NGOs to request food for their beneficiaries
-- **Real-time Matching**: AI-powered system to match donations with requests based on location, quantity, and urgency
-- **Impact Analytics**: Comprehensive dashboard showing environmental and social impact metrics
-- **Logistics Integration**: Built-in logistics options for food pickup and delivery
-- **User Authentication**: Secure JWT-based authentication with role-based access control
-- **File Upload System**: Support for food images and safety certificates
-- **Geographic Search**: Location-based matching and mapping features
-- **Mobile Responsive**: Optimized for all devices
+Smart Food Donation System: Simple forms for restaurants, hotels, and individuals to donate surplus food
 
-## 🛠 Tech Stack
+NGO Request Management: Streamlined process for NGOs to request food for their beneficiaries
 
-### Frontend
-- **Next.js 14** (App Router)
-- **React 18** with TypeScript
-- **Tailwind CSS** for styling
-- **Radix UI** for components
-- **Axios** for API calls
+Real-time Matching: AI-powered system matches donations with requests based on location, quantity, and urgency
 
-### Backend
-- **Node.js** with Express.js
-- **MongoDB** with Mongoose ODM
-- **JWT** for authentication
-- **Multer** for file uploads
-- **Express Validator** for input validation
-- **Helmet** for security headers
-- **CORS** for cross-origin requests
+Impact Analytics: Dashboards display social and environmental impact metrics
 
-## 📋 Prerequisites
+Logistics Integration: Built-in logistics options for food pickup and delivery
 
-- Node.js 18+ and npm
-- MongoDB Atlas account (or local MongoDB)
-- Git
+User Authentication: Secure JWT-based authentication with role-based access control
 
-## 🚀 Local Development Setup
+File Uploads: Support for food images and safety certificates
 
-### 1. Clone the Repository
+Geographic Search: Location-based matching and mapping features
 
-```bash
+Mobile Responsive: Optimized for all device sizes
+
+Tech Stack
+Frontend
+
+Next.js 14 (App Router)
+
+React 18 with TypeScript
+
+Tailwind CSS for styling
+
+Radix UI for components
+
+Axios for API communication
+
+Backend
+
+Node.js with Express.js
+
+MongoDB with Mongoose ODM
+
+JWT for authentication
+
+Multer for file uploads
+
+Express Validator for input validation
+
+Helmet for security headers
+
+CORS for cross-origin requests
+
+Prerequisites
+
+Node.js 18+ and npm
+
+MongoDB Atlas account (or local MongoDB)
+
+Git
+
+Local Development Setup
+1. Clone the Repository
 git clone <repository-url>
 cd serve-to-save-india
-```
 
-### 2. Backend Setup
-
-```bash
-# Navigate to backend directory
+2. Backend Setup
 cd Backend
-
-# Install dependencies
 npm install
-
-# Create environment file
 cp .env.example .env
 
-# Edit .env with your configuration
-nano .env
-```
 
-**Required Backend Environment Variables:**
+Edit .env with your configuration:
 
-```env
-# Database
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/serve-to-save
-
-# JWT Configuration
-JWT_SECRET=your-super-secret-jwt-key-here
-JWT_REFRESH_SECRET=your-refresh-secret-here
+JWT_SECRET=your-secret-key
+JWT_REFRESH_SECRET=your-refresh-secret
 JWT_EXPIRES_IN=24h
 JWT_REFRESH_EXPIRES_IN=7d
-
-# Server Configuration
 PORT=5000
 NODE_ENV=development
-
-# CORS Configuration
 FRONTEND_URL=http://localhost:3000
-
-# File Upload Configuration
 UPLOAD_PATH=./uploads
 MAX_FILE_SIZE=5242880
-
-# Email Configuration (for notifications)
 EMAIL_SERVICE=gmail
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password
 
-# API Keys (Optional)
-OPENAI_API_KEY=your-openai-api-key
-```
 
-```bash
-# Start the backend server
+Start the backend server:
+
 npm run dev
-```
 
-The backend will run on `http://localhost:5000`
 
-### 3. Frontend Setup
+The backend runs on http://localhost:5000.
 
-```bash
-# Navigate to frontend directory (from root)
-cd .
-
-# Install dependencies
+3. Frontend Setup
+cd ..
 npm install
-
-# Create environment file
 cp .env.example .env.local
 
-# Edit .env.local with your configuration
-nano .env.local
-```
 
-**Required Frontend Environment Variables:**
+Edit .env.local with your configuration:
 
-```env
-NEXT_PUBLIC_API_URL=http://localhost:5001/api
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
-```
 
-```bash
-# Start the frontend development server
+
+Start the frontend server:
+
 npm run dev
-```
 
-The frontend will run on `http://localhost:3000`
 
-## 🗄 MongoDB Atlas Setup
+The frontend runs on http://localhost:3000.
 
-### 1. Create MongoDB Atlas Account
+MongoDB Atlas Setup
 
-1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Sign up for a free account
-3. Create a new cluster (M0 Sandbox is free)
+Create a free MongoDB Atlas account and cluster.
 
-### 2. Configure Database Access
+Add a new database user with read and write permissions.
 
-1. Go to "Database Access" in the left sidebar
-2. Click "Add New Database User"
-3. Create a user with "Read and write to any database" permissions
-4. Note down the username and password
+Configure network access (0.0.0.0/0 for development, IP-restricted for production).
 
-### 3. Configure Network Access
+Copy the connection string and update it in your .env.
 
-1. Go to "Network Access" in the left sidebar
-2. Click "Add IP Address"
-3. For development, you can add `0.0.0.0/0` (allow access from anywhere)
-4. For production, add only your server's IP address
+API Documentation
+Authentication
 
-### 4. Get Connection String
+POST /api/auth/signup — User registration
 
-1. Go to "Clusters" and click "Connect"
-2. Choose "Connect your application"
-3. Copy the connection string
-4. Replace `<password>` with your database user password
-5. Replace `<dbname>` with your database name (e.g., `serve-to-save`)
+POST /api/auth/login — User login
 
-## 🚀 Deployment
+GET /api/auth/me — Get current user
 
-### Backend Deployment (Render/Heroku)
+PUT /api/auth/profile — Update user profile
 
-#### Using Render:
+Donations
 
-1. Create account on [Render](https://render.com)
-2. Connect your GitHub repository
-3. Create a new "Web Service"
-4. Configure:
-   - **Build Command**: `cd Backend && npm install`
-   - **Start Command**: `cd Backend && npm start`
-   - **Environment**: Add all environment variables from `.env.example`
+POST /api/donations — Create a donation
 
-#### Using Heroku:
+GET /api/donations — Get all donations (with filters)
 
-```bash
-# Install Heroku CLI
-# Create Heroku app
-heroku create your-app-name
+GET /api/donations/:id — Get specific donation
 
-# Set environment variables
-heroku config:set MONGODB_URI=your-mongodb-uri
-heroku config:set JWT_SECRET=your-jwt-secret
-# ... add all other environment variables
+GET /api/donations/nearby — Get nearby donations
 
-# Deploy
-git subtree push --prefix Backend heroku main
-```
+PATCH /api/donations/:id — Update donation
 
-### Frontend Deployment (Vercel)
+DELETE /api/donations/:id — Cancel donation
 
-#### Using Vercel:
+Requests
 
-1. Install Vercel CLI: `npm i -g vercel`
-2. Login: `vercel login`
-3. Deploy: `vercel`
-4. Set environment variables in Vercel dashboard
-5. Update `NEXT_PUBLIC_API_URL` to your deployed backend URL
+POST /api/requests — Create a request
 
-#### Using Netlify:
+GET /api/requests — Get all requests (with filters)
 
-1. Connect your GitHub repository to Netlify
-2. Set build command: `npm run build`
-3. Set publish directory: `.next`
-4. Add environment variables in Netlify dashboard
+GET /api/requests/:id — Get specific request
 
-## 📱 API Documentation
+GET /api/requests/urgent — Get urgent requests
 
-### Authentication Endpoints
+PATCH /api/requests/:id — Update request
 
-- `POST /api/auth/signup` - User registration
-- `POST /api/auth/login` - User login
-- `GET /api/auth/me` - Get current user
-- `PUT /api/auth/profile` - Update user profile
+Impact
 
-### Donation Endpoints
+GET /api/impact/summary — Get overall impact summary
 
-- `POST /api/donations` - Create donation
-- `GET /api/donations` - Get all donations (with filters)
-- `GET /api/donations/:id` - Get specific donation
-- `GET /api/donations/nearby` - Get nearby donations
-- `PATCH /api/donations/:id` - Update donation
-- `DELETE /api/donations/:id` - Cancel donation
+GET /api/impact/charts — Get chart data
 
-### Request Endpoints
+GET /api/impact/city-wise — Get city-wise impact
 
-- `POST /api/requests` - Create food request
-- `GET /api/requests` - Get all requests (with filters)
-- `GET /api/requests/:id` - Get specific request
-- `GET /api/requests/urgent` - Get urgent requests
-- `PATCH /api/requests/:id` - Update request
+Testing
 
-### Impact Endpoints
+Backend tests:
 
-- `GET /api/impact/summary` - Get impact summary
-- `GET /api/impact/charts` - Get chart data
-- `GET /api/impact/city-wise` - Get city-wise impact
-
-## 🧪 Testing
-
-```bash
-# Backend tests
 cd Backend
 npm test
 
-# Frontend tests
+
+Frontend tests:
+
 npm test
-```
 
-## 🤝 Contributing
+Contributing
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
+Fork the repository
 
-## 📄 License
+Create a feature branch: git checkout -b feature/your-feature
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Commit changes: git commit -m "Add your feature"
 
-## 🆘 Support
+Push branch: git push origin feature/your-feature
 
-If you encounter any issues:
-
-1. Check the [Issues](https://github.com/your-repo/issues) page
-2. Create a new issue with detailed description
-3. Contact support at support@servetosaveindia.org
-
-## 🙏 Acknowledgments
-
-- Thanks to all contributors and supporters
-- Special thanks to NGO partners across India
-- Built with ❤️ for a hunger-free India
+Open a Pull Request

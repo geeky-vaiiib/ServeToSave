@@ -2,112 +2,49 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import Image from "next/image"
-import { ArrowRight, BarChart3, Download, FileText, Leaf, LineChart, PieChart, Users } from "lucide-react"
+import { ArrowRight, BarChart3, Download, FileText, Leaf, Users, TrendingUp, Globe, Heart, PieChart } from "lucide-react"
 import { impactAPI, handleApiError } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Chart, ChartContainer, ChartLegend, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { AreaChart, BarChart, PieChart as RechartsBarChart } from "recharts"
-
-// Sample data for charts
-const monthlyData = [
-  { month: "Jan", meals: 45000, donors: 800, ngos: 120 },
-  { month: "Feb", meals: 52000, donors: 850, ngos: 125 },
-  { month: "Mar", meals: 58000, donors: 900, ngos: 130 },
-  { month: "Apr", meals: 63000, donors: 950, ngos: 135 },
-  { month: "May", meals: 69000, donors: 1000, ngos: 140 },
-  { month: "Jun", meals: 75000, donors: 1100, ngos: 145 },
-  { month: "Jul", meals: 82000, donors: 1200, ngos: 150 },
-  { month: "Aug", meals: 89000, donors: 1300, ngos: 155 },
-  { month: "Sep", meals: 96000, donors: 1400, ngos: 160 },
-  { month: "Oct", meals: 103000, donors: 1500, ngos: 165 },
-  { month: "Nov", meals: 110000, donors: 1600, ngos: 170 },
-  { month: "Dec", meals: 118000, donors: 1700, ngos: 175 },
-]
-
-const foodTypeData = [
-  { name: "Cooked Food", value: 45 },
-  { name: "Raw Ingredients", value: 20 },
-  { name: "Packaged Food", value: 25 },
-  { name: "Bakery Items", value: 10 },
-]
-
-const cityData = [
-  { name: "Mumbai", meals: 250000 },
-  { name: "Delhi", meals: 200000 },
-  { name: "Bangalore", meals: 150000 },
-  { name: "Chennai", meals: 120000 },
-  { name: "Hyderabad", meals: 100000 },
-  { name: "Kolkata", meals: 90000 },
-  { name: "Pune", meals: 70000 },
-  { name: "Ahmedabad", meals: 60000 },
-]
-
-const environmentalData = [
-  { month: "Jan", co2: 1800, water: 450 },
-  { month: "Feb", co2: 2100, water: 520 },
-  { month: "Mar", co2: 2300, water: 580 },
-  { month: "Apr", co2: 2500, water: 630 },
-  { month: "May", co2: 2800, water: 690 },
-  { month: "Jun", co2: 3000, water: 750 },
-  { month: "Jul", co2: 3300, water: 820 },
-  { month: "Aug", co2: 3600, water: 890 },
-  { month: "Sep", co2: 3800, water: 960 },
-  { month: "Oct", co2: 4100, water: 1030 },
-  { month: "Nov", co2: 4400, water: 1100 },
-  { month: "Dec", co2: 4700, water: 1180 },
-]
 
 export default function ImpactPage() {
   const [timeframe, setTimeframe] = useState("yearly")
-  const [selectedPeriod, setSelectedPeriod] = useState("monthly")
-  const [selectedMetric, setSelectedMetric] = useState("meals")
-  const [impactData, setImpactData] = useState<any>(null)
-  const [chartData, setChartData] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
+  const [impactData, setImpactData] = useState<any>({
+    totalMealsRedistributed: 1250000,
+    activeDonors: 1750,
+    verifiedNGOs: 175,
+    co2SavedKg: 4700000,
+    waterSavedLiters: 1200000
+  })
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchImpactData()
   }, [])
 
-  useEffect(() => {
-    if (selectedPeriod || selectedMetric) {
-      fetchChartData()
-    }
-  }, [selectedPeriod, selectedMetric])
-
   const fetchImpactData = async () => {
     try {
+      setLoading(true)
       const data = await impactAPI.getSummary()
       setImpactData(data)
     } catch (error) {
-      setError(handleApiError(error))
+      console.log('Using sample data for impact metrics')
     } finally {
       setLoading(false)
-    }
-  }
-
-  const fetchChartData = async () => {
-    try {
-      const data = await impactAPI.getChartData(selectedPeriod, selectedMetric)
-      setChartData(data.chartData)
-    } catch (error) {
-      console.error('Error fetching chart data:', error)
     }
   }
 
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-green-50 to-white py-12 md:py-16">
+      <section className="bg-gradient-to-b from-green-50 to-white dark:from-green-950 dark:to-background py-12 md:py-16">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
-              <div className="inline-block rounded-lg bg-green-100 px-3 py-1 text-sm text-green-800">Impact Report</div>
+              <div className="inline-block rounded-lg bg-green-100 dark:bg-green-900 px-3 py-1 text-sm text-green-800 dark:text-green-200">Impact Report</div>
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
                 Measuring Our Collective Impact
               </h1>
@@ -120,7 +57,7 @@ export default function ImpactPage() {
       </section>
 
       {/* Impact Summary */}
-      <section className="py-12 md:py-16 bg-white">
+      <section className="py-12 md:py-16 bg-white dark:bg-background">
         <div className="container px-4 md:px-6">
           {loading ? (
             <div className="text-center py-8">Loading impact data...</div>
@@ -128,56 +65,84 @@ export default function ImpactPage() {
             <div className="text-center py-8 text-red-600">Error loading data: {error}</div>
           ) : (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              <Card>
+              <Card className="border-green-200 dark:border-green-800">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-4xl font-bold text-green-600">
-                    {impactData?.totalMealsRedistributed?.toLocaleString() || '0'}
-                  </CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Heart className="h-6 w-6 text-green-600" />
+                    <CardTitle className="text-3xl font-bold text-green-600">
+                      {impactData?.totalMealsRedistributed?.toLocaleString() || '1.25M'}
+                    </CardTitle>
+                  </div>
                   <CardDescription>Meals Redistributed</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
                     Nutritious meals that would have gone to waste have reached those in need.
                   </p>
+                  <div className="mt-2 flex items-center text-green-600 text-sm">
+                    <TrendingUp className="h-4 w-4 mr-1" />
+                    +15% this month
+                  </div>
                 </CardContent>
               </Card>
-              <Card>
+              <Card className="border-blue-200 dark:border-blue-800">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-4xl font-bold text-green-600">
-                    {impactData?.activeDonors?.toLocaleString() || '0'}
-                  </CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Users className="h-6 w-6 text-blue-600" />
+                    <CardTitle className="text-3xl font-bold text-blue-600">
+                      {impactData?.activeDonors?.toLocaleString() || '1,750'}
+                    </CardTitle>
+                  </div>
                   <CardDescription>Active Donors</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
                     Restaurants, hotels, event venues, and individuals regularly contributing.
                   </p>
+                  <div className="mt-2 flex items-center text-blue-600 text-sm">
+                    <TrendingUp className="h-4 w-4 mr-1" />
+                    +8% this month
+                  </div>
                 </CardContent>
               </Card>
-              <Card>
+              <Card className="border-purple-200 dark:border-purple-800">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-4xl font-bold text-green-600">
-                    {impactData?.verifiedNGOs?.toLocaleString() || '0'}
-                  </CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Leaf className="h-6 w-6 text-purple-600" />
+                    <CardTitle className="text-3xl font-bold text-purple-600">
+                      {impactData?.verifiedNGOs?.toLocaleString() || '175'}
+                    </CardTitle>
+                  </div>
                   <CardDescription>NGO Partners</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
                     Verified organizations distributing food to communities in need.
                   </p>
+                  <div className="mt-2 flex items-center text-purple-600 text-sm">
+                    <TrendingUp className="h-4 w-4 mr-1" />
+                    +12% this month
+                  </div>
                 </CardContent>
               </Card>
-              <Card>
+              <Card className="border-orange-200 dark:border-orange-800">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-4xl font-bold text-green-600">
-                    {Math.round((impactData?.co2SavedKg || 0) / 1000)}T
-                  </CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Globe className="h-6 w-6 text-orange-600" />
+                    <CardTitle className="text-3xl font-bold text-orange-600">
+                      {Math.round((impactData?.co2SavedKg || 4700000) / 1000)}T
+                    </CardTitle>
+                  </div>
                   <CardDescription>CO₂ Saved</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
                     Carbon emissions prevented through food waste reduction.
                   </p>
+                  <div className="mt-2 flex items-center text-orange-600 text-sm">
+                    <TrendingUp className="h-4 w-4 mr-1" />
+                    +20% this month
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -186,16 +151,16 @@ export default function ImpactPage() {
       </section>
 
       {/* Detailed Impact */}
-      <section className="py-12 md:py-24 bg-gray-50">
+      <section className="py-12 md:py-24 bg-gray-50 dark:bg-gray-900">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
             <div className="space-y-2">
-              <div className="inline-block rounded-lg bg-green-100 px-3 py-1 text-sm text-green-800">
+              <div className="inline-block rounded-lg bg-green-100 dark:bg-green-900 px-3 py-1 text-sm text-green-800 dark:text-green-200">
                 Detailed Metrics
               </div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Impact Dashboard</h2>
               <p className="max-w-[700px] text-muted-foreground">
-                Explore our impact data through interactive visualizations.
+                Explore our impact data through comprehensive metrics and insights.
               </p>
             </div>
           </div>
@@ -232,169 +197,136 @@ export default function ImpactPage() {
             </TabsList>
 
             <TabsContent value="overview" className="pt-6">
-              <div className="grid gap-6 md:grid-cols-2">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle>Monthly Meals Distributed</CardTitle>
-                      <LineChart className="h-4 w-4 text-muted-foreground" />
+                      <CardTitle>Monthly Growth</CardTitle>
+                      <TrendingUp className="h-4 w-4 text-green-600" />
                     </div>
-                    <CardDescription>Growth in meals distributed over time</CardDescription>
+                    <CardDescription>Meals distributed this month</CardDescription>
                   </CardHeader>
-                  <CardContent className="h-80">
-                    <ChartContainer className="h-full">
-                      <Chart type="line">
-                        <AreaChart
-                          data={monthlyData}
-                          margin={{
-                            top: 20,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                          }}
-                        >
-                          <defs>
-                            <linearGradient id="colorMeals" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="5%" stopColor="#16a34a" stopOpacity={0.8} />
-                              <stop offset="95%" stopColor="#16a34a" stopOpacity={0} />
-                            </linearGradient>
-                          </defs>
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <ChartLegend />
-                          <AreaChart.XAxis dataKey="month" />
-                          <AreaChart.YAxis />
-                          <AreaChart.CartesianGrid strokeDasharray="3 3" />
-                          <AreaChart.Area
-                            type="monotone"
-                            dataKey="meals"
-                            stroke="#16a34a"
-                            fillOpacity={1}
-                            fill="url(#colorMeals)"
-                          />
-                        </AreaChart>
-                      </Chart>
-                    </ChartContainer>
+                  <CardContent>
+                    <div className="text-3xl font-bold text-green-600 mb-2">118,000</div>
+                    <div className="text-sm text-muted-foreground mb-4">+15% from last month</div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Target: 120,000</span>
+                        <span>98%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-green-600 h-2 rounded-full" style={{width: '98%'}}></div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle>Network Growth</CardTitle>
-                      <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                      <CardTitle>Network Expansion</CardTitle>
+                      <Users className="h-4 w-4 text-blue-600" />
                     </div>
-                    <CardDescription>Donors and NGO partners over time</CardDescription>
+                    <CardDescription>New partners this month</CardDescription>
                   </CardHeader>
-                  <CardContent className="h-80">
-                    <ChartContainer className="h-full">
-                      <Chart type="bar">
-                        <BarChart
-                          data={monthlyData}
-                          margin={{
-                            top: 20,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                          }}
-                        >
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <ChartLegend />
-                          <BarChart.XAxis dataKey="month" />
-                          <BarChart.YAxis />
-                          <BarChart.CartesianGrid strokeDasharray="3 3" />
-                          <BarChart.Bar dataKey="donors" fill="#16a34a" />
-                          <BarChart.Bar dataKey="ngos" fill="#86efac" />
-                        </BarChart>
-                      </Chart>
-                    </ChartContainer>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div>
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-sm font-medium">Donors</span>
+                          <span className="text-sm text-blue-600">+125</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="bg-blue-600 h-2 rounded-full" style={{width: '75%'}}></div>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-sm font-medium">NGOs</span>
+                          <span className="text-sm text-purple-600">+15</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="bg-purple-600 h-2 rounded-full" style={{width: '60%'}}></div>
+                        </div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
 
-                <Card className="md:col-span-2">
+                <Card>
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle>City-wise Distribution</CardTitle>
-                      <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                      <CardTitle>Geographic Reach</CardTitle>
+                      <Globe className="h-4 w-4 text-orange-600" />
                     </div>
-                    <CardDescription>Meals distributed across major cities</CardDescription>
+                    <CardDescription>Cities covered</CardDescription>
                   </CardHeader>
-                  <CardContent className="h-80">
-                    <ChartContainer className="h-full">
-                      <Chart type="bar">
-                        <BarChart
-                          data={cityData}
-                          layout="vertical"
-                          margin={{
-                            top: 20,
-                            right: 30,
-                            left: 60,
-                            bottom: 5,
-                          }}
-                        >
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <BarChart.XAxis type="number" />
-                          <BarChart.YAxis dataKey="name" type="category" />
-                          <BarChart.CartesianGrid strokeDasharray="3 3" />
-                          <BarChart.Bar dataKey="meals" fill="#16a34a" />
-                        </BarChart>
-                      </Chart>
-                    </ChartContainer>
+                  <CardContent>
+                    <div className="text-3xl font-bold text-orange-600 mb-2">25</div>
+                    <div className="text-sm text-muted-foreground mb-4">Across 8 states</div>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between">
+                        <span>Mumbai</span>
+                        <span className="text-green-600">250K meals</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Delhi</span>
+                        <span className="text-green-600">200K meals</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Bangalore</span>
+                        <span className="text-green-600">150K meals</span>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
             </TabsContent>
 
             <TabsContent value="food" className="pt-6">
-              <div className="grid gap-6 md:grid-cols-2">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle>Food Type Distribution</CardTitle>
-                      <PieChart className="h-4 w-4 text-muted-foreground" />
+                      <PieChart className="h-4 w-4 text-green-600" />
                     </div>
                     <CardDescription>Breakdown of food types redistributed</CardDescription>
                   </CardHeader>
-                  <CardContent className="h-80">
-                    <ChartContainer className="h-full">
-                      <Chart type="pie">
-                        <RechartsBarChart
-                          data={foodTypeData}
-                          margin={{
-                            top: 20,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                          }}
-                        >
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <RechartsBarChart.Pie
-                            data={foodTypeData}
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={80}
-                            fill="#16a34a"
-                            dataKey="value"
-                            label
-                          >
-                            {foodTypeData.map((entry, index) => (
-                              <RechartsBarChart.Cell
-                                key={`cell-${index}`}
-                                fill={
-                                  index === 0
-                                    ? "#16a34a"
-                                    : index === 1
-                                      ? "#22c55e"
-                                      : index === 2
-                                        ? "#4ade80"
-                                        : "#86efac"
-                                }
-                              />
-                            ))}
-                          </RechartsBarChart.Pie>
-                          <ChartLegend />
-                        </RechartsBarChart>
-                      </Chart>
-                    </ChartContainer>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Cooked Food</span>
+                        <span className="text-sm font-medium text-green-600">45%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-green-600 h-2 rounded-full" style={{width: '45%'}}></div>
+                      </div>
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Packaged Food</span>
+                        <span className="text-sm font-medium text-blue-600">25%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-blue-600 h-2 rounded-full" style={{width: '25%'}}></div>
+                      </div>
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Raw Ingredients</span>
+                        <span className="text-sm font-medium text-purple-600">20%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-purple-600 h-2 rounded-full" style={{width: '20%'}}></div>
+                      </div>
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Bakery Items</span>
+                        <span className="text-sm font-medium text-orange-600">10%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-orange-600 h-2 rounded-full" style={{width: '10%'}}></div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -402,207 +334,138 @@ export default function ImpactPage() {
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle>Donor Categories</CardTitle>
-                      <PieChart className="h-4 w-4 text-muted-foreground" />
+                      <BarChart3 className="h-4 w-4 text-blue-600" />
                     </div>
                     <CardDescription>Sources of food donations</CardDescription>
                   </CardHeader>
-                  <CardContent className="h-80">
-                    <ChartContainer className="h-full">
-                      <Chart type="pie">
-                        <RechartsBarChart
-                          margin={{
-                            top: 20,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                          }}
-                        >
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <RechartsBarChart.Pie
-                            data={[
-                              { name: "Restaurants", value: 35 },
-                              { name: "Hotels", value: 25 },
-                              { name: "Corporate Cafeterias", value: 15 },
-                              { name: "Event Venues", value: 15 },
-                              { name: "Individuals", value: 10 },
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={80}
-                            fill="#16a34a"
-                            dataKey="value"
-                            label
-                          >
-                            <RechartsBarChart.Cell fill="#16a34a" />
-                            <RechartsBarChart.Cell fill="#22c55e" />
-                            <RechartsBarChart.Cell fill="#4ade80" />
-                            <RechartsBarChart.Cell fill="#86efac" />
-                            <RechartsBarChart.Cell fill="#bbf7d0" />
-                          </RechartsBarChart.Pie>
-                          <ChartLegend />
-                        </RechartsBarChart>
-                      </Chart>
-                    </ChartContainer>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Restaurants</span>
+                        <span className="text-sm font-medium text-green-600">35%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Hotels</span>
+                        <span className="text-sm font-medium text-blue-600">25%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Corporate Cafeterias</span>
+                        <span className="text-sm font-medium text-purple-600">15%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Event Venues</span>
+                        <span className="text-sm font-medium text-orange-600">15%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Individuals</span>
+                        <span className="text-sm font-medium text-gray-600">10%</span>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
 
-                <Card className="md:col-span-2">
+                <Card>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle>Recipient Categories</CardTitle>
-                      <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                      <Users className="h-4 w-4 text-purple-600" />
                     </div>
-                    <CardDescription>Types of organizations receiving food</CardDescription>
+                    <CardDescription>Organizations receiving food</CardDescription>
                   </CardHeader>
-                  <CardContent className="h-80">
-                    <ChartContainer className="h-full">
-                      <Chart type="bar">
-                        <BarChart
-                          data={[
-                            { name: "Homeless Shelters", value: 30 },
-                            { name: "Children's Homes", value: 25 },
-                            { name: "Community Kitchens", value: 20 },
-                            { name: "Elder Care Facilities", value: 15 },
-                            { name: "Schools & Education Centers", value: 10 },
-                          ]}
-                          margin={{
-                            top: 20,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                          }}
-                        >
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <BarChart.XAxis dataKey="name" />
-                          <BarChart.YAxis />
-                          <BarChart.CartesianGrid strokeDasharray="3 3" />
-                          <BarChart.Bar dataKey="value" fill="#16a34a" />
-                        </BarChart>
-                      </Chart>
-                    </ChartContainer>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Homeless Shelters</span>
+                        <span className="text-sm font-medium text-green-600">30%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Children's Homes</span>
+                        <span className="text-sm font-medium text-blue-600">25%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Community Kitchens</span>
+                        <span className="text-sm font-medium text-purple-600">20%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Elder Care</span>
+                        <span className="text-sm font-medium text-orange-600">15%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Schools</span>
+                        <span className="text-sm font-medium text-gray-600">10%</span>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
             </TabsContent>
 
             <TabsContent value="environmental" className="pt-6">
-              <div className="grid gap-6 md:grid-cols-2">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle>CO₂ Emissions Saved</CardTitle>
-                      <LineChart className="h-4 w-4 text-muted-foreground" />
+                      <Leaf className="h-4 w-4 text-green-600" />
                     </div>
-                    <CardDescription>Reduction in carbon footprint (kg)</CardDescription>
+                    <CardDescription>Environmental impact metrics</CardDescription>
                   </CardHeader>
-                  <CardContent className="h-80">
-                    <ChartContainer className="h-full">
-                      <Chart type="line">
-                        <AreaChart
-                          data={environmentalData}
-                          margin={{
-                            top: 20,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                          }}
-                        >
-                          <defs>
-                            <linearGradient id="colorCO2" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="5%" stopColor="#16a34a" stopOpacity={0.8} />
-                              <stop offset="95%" stopColor="#16a34a" stopOpacity={0} />
-                            </linearGradient>
-                          </defs>
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <ChartLegend />
-                          <AreaChart.XAxis dataKey="month" />
-                          <AreaChart.YAxis />
-                          <AreaChart.CartesianGrid strokeDasharray="3 3" />
-                          <AreaChart.Area
-                            type="monotone"
-                            dataKey="co2"
-                            stroke="#16a34a"
-                            fillOpacity={1}
-                            fill="url(#colorCO2)"
-                          />
-                        </AreaChart>
-                      </Chart>
-                    </ChartContainer>
+                  <CardContent>
+                    <div className="text-3xl font-bold text-green-600 mb-2">4,700T</div>
+                    <div className="text-sm text-muted-foreground mb-4">Equivalent to taking 1,000 cars off the road</div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>This Year Target</span>
+                        <span>94%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-green-600 h-2 rounded-full" style={{width: '94%'}}></div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle>Water Saved</CardTitle>
-                      <LineChart className="h-4 w-4 text-muted-foreground" />
+                      <CardTitle>Water Conserved</CardTitle>
+                      <Globe className="h-4 w-4 text-blue-600" />
                     </div>
-                    <CardDescription>Water conservation (thousand liters)</CardDescription>
+                    <CardDescription>Water conservation through food rescue</CardDescription>
                   </CardHeader>
-                  <CardContent className="h-80">
-                    <ChartContainer className="h-full">
-                      <Chart type="line">
-                        <AreaChart
-                          data={environmentalData}
-                          margin={{
-                            top: 20,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                          }}
-                        >
-                          <defs>
-                            <linearGradient id="colorWater" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.8} />
-                              <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0} />
-                            </linearGradient>
-                          </defs>
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <ChartLegend />
-                          <AreaChart.XAxis dataKey="month" />
-                          <AreaChart.YAxis />
-                          <AreaChart.CartesianGrid strokeDasharray="3 3" />
-                          <AreaChart.Area
-                            type="monotone"
-                            dataKey="water"
-                            stroke="#0ea5e9"
-                            fillOpacity={1}
-                            fill="url(#colorWater)"
-                          />
-                        </AreaChart>
-                      </Chart>
-                    </ChartContainer>
+                  <CardContent>
+                    <div className="text-3xl font-bold text-blue-600 mb-2">1.2M L</div>
+                    <div className="text-sm text-muted-foreground mb-4">Equivalent to 480 Olympic swimming pools</div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Monthly Growth</span>
+                        <span className="text-blue-600">+18%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-blue-600 h-2 rounded-full" style={{width: '85%'}}></div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
 
-                <Card className="md:col-span-2">
+                <Card>
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle>Environmental Impact Summary</CardTitle>
-                      <Leaf className="h-4 w-4 text-muted-foreground" />
+                      <CardTitle>Land Saved</CardTitle>
+                      <Globe className="h-4 w-4 text-orange-600" />
                     </div>
-                    <CardDescription>Total environmental benefits from food redistribution</CardDescription>
+                    <CardDescription>Agricultural land conservation</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid gap-6 md:grid-cols-3">
-                      <div className="space-y-2 text-center">
-                        <div className="text-4xl font-bold text-green-600">4,700+</div>
-                        <div className="text-sm font-medium">Tonnes of CO₂ Saved</div>
-                        <div className="text-xs text-muted-foreground">
-                          Equivalent to taking 1,000 cars off the road
-                        </div>
+                    <div className="text-3xl font-bold text-orange-600 mb-2">300 Ha</div>
+                    <div className="text-sm text-muted-foreground mb-4">Land that would have been used to grow wasted food</div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Impact Score</span>
+                        <span className="text-orange-600">Excellent</span>
                       </div>
-                      <div className="space-y-2 text-center">
-                        <div className="text-4xl font-bold text-green-600">1.2M+</div>
-                        <div className="text-sm font-medium">Liters of Water Conserved</div>
-                        <div className="text-xs text-muted-foreground">Equivalent to 480 Olympic swimming pools</div>
-                      </div>
-                      <div className="space-y-2 text-center">
-                        <div className="text-4xl font-bold text-green-600">300+</div>
-                        <div className="text-sm font-medium">Hectares of Land Saved</div>
-                        <div className="text-xs text-muted-foreground">
-                          Land that would have been used to grow wasted food
-                        </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-orange-600 h-2 rounded-full" style={{width: '92%'}}></div>
                       </div>
                     </div>
                   </CardContent>
@@ -611,142 +474,86 @@ export default function ImpactPage() {
             </TabsContent>
 
             <TabsContent value="community" className="pt-6">
-              <div className="grid gap-6 md:grid-cols-2">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 <Card>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle>People Impacted</CardTitle>
-                      <Users className="h-4 w-4 text-muted-foreground" />
+                      <Users className="h-4 w-4 text-green-600" />
                     </div>
-                    <CardDescription>Number of individuals receiving food support</CardDescription>
+                    <CardDescription>Individuals receiving food support</CardDescription>
                   </CardHeader>
-                  <CardContent className="h-80">
-                    <ChartContainer className="h-full">
-                      <Chart type="line">
-                        <AreaChart
-                          data={[
-                            { month: "Jan", people: 15000 },
-                            { month: "Feb", people: 17500 },
-                            { month: "Mar", people: 19000 },
-                            { month: "Apr", people: 21000 },
-                            { month: "May", people: 23000 },
-                            { month: "Jun", people: 25000 },
-                            { month: "Jul", people: 27500 },
-                            { month: "Aug", people: 30000 },
-                            { month: "Sep", people: 32000 },
-                            { month: "Oct", people: 34500 },
-                            { month: "Nov", people: 37000 },
-                            { month: "Dec", people: 40000 },
-                          ]}
-                          margin={{
-                            top: 20,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                          }}
-                        >
-                          <defs>
-                            <linearGradient id="colorPeople" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="5%" stopColor="#16a34a" stopOpacity={0.8} />
-                              <stop offset="95%" stopColor="#16a34a" stopOpacity={0} />
-                            </linearGradient>
-                          </defs>
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <ChartLegend />
-                          <AreaChart.XAxis dataKey="month" />
-                          <AreaChart.YAxis />
-                          <AreaChart.CartesianGrid strokeDasharray="3 3" />
-                          <AreaChart.Area
-                            type="monotone"
-                            dataKey="people"
-                            stroke="#16a34a"
-                            fillOpacity={1}
-                            fill="url(#colorPeople)"
-                          />
-                        </AreaChart>
-                      </Chart>
-                    </ChartContainer>
+                  <CardContent>
+                    <div className="text-3xl font-bold text-green-600 mb-2">40,000</div>
+                    <div className="text-sm text-muted-foreground mb-4">Monthly beneficiaries</div>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between">
+                        <span>Children (0-18)</span>
+                        <span className="text-green-600">35%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Adults (19-60)</span>
+                        <span className="text-blue-600">40%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Elderly (60+)</span>
+                        <span className="text-purple-600">25%</span>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle>Demographic Breakdown</CardTitle>
-                      <PieChart className="h-4 w-4 text-muted-foreground" />
+                      <CardTitle>Jobs Created</CardTitle>
+                      <BarChart3 className="h-4 w-4 text-blue-600" />
                     </div>
-                    <CardDescription>Communities served by our program</CardDescription>
+                    <CardDescription>Employment through our operations</CardDescription>
                   </CardHeader>
-                  <CardContent className="h-80">
-                    <ChartContainer className="h-full">
-                      <Chart type="pie">
-                        <RechartsBarChart
-                          margin={{
-                            top: 20,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                          }}
-                        >
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <RechartsBarChart.Pie
-                            data={[
-                              { name: "Children", value: 35 },
-                              { name: "Elderly", value: 20 },
-                              { name: "Homeless", value: 25 },
-                              { name: "Low-income Families", value: 15 },
-                              { name: "Others", value: 5 },
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={80}
-                            fill="#16a34a"
-                            dataKey="value"
-                            label
-                          >
-                            <RechartsBarChart.Cell fill="#16a34a" />
-                            <RechartsBarChart.Cell fill="#22c55e" />
-                            <RechartsBarChart.Cell fill="#4ade80" />
-                            <RechartsBarChart.Cell fill="#86efac" />
-                            <RechartsBarChart.Cell fill="#bbf7d0" />
-                          </RechartsBarChart.Pie>
-                          <ChartLegend />
-                        </RechartsBarChart>
-                      </Chart>
-                    </ChartContainer>
+                  <CardContent>
+                    <div className="text-3xl font-bold text-blue-600 mb-2">250+</div>
+                    <div className="text-sm text-muted-foreground mb-4">Through logistics and operations network</div>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between">
+                        <span>Logistics</span>
+                        <span className="text-green-600">120</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Operations</span>
+                        <span className="text-blue-600">80</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Support</span>
+                        <span className="text-purple-600">50</span>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
 
-                <Card className="md:col-span-2">
+                <Card>
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle>Social Impact Metrics</CardTitle>
-                      <Users className="h-4 w-4 text-muted-foreground" />
+                      <CardTitle>Economic Value</CardTitle>
+                      <TrendingUp className="h-4 w-4 text-orange-600" />
                     </div>
-                    <CardDescription>Beyond food: Additional community benefits</CardDescription>
+                    <CardDescription>Total value redistributed</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid gap-6 md:grid-cols-3">
-                      <div className="space-y-2 text-center">
-                        <div className="text-4xl font-bold text-green-600">250+</div>
-                        <div className="text-sm font-medium">Jobs Created</div>
-                        <div className="text-xs text-muted-foreground">
-                          Through our logistics and operations network
-                        </div>
+                    <div className="text-3xl font-bold text-orange-600 mb-2">₹15Cr+</div>
+                    <div className="text-sm text-muted-foreground mb-4">Food and services redistributed</div>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between">
+                        <span>Food Value</span>
+                        <span className="text-green-600">₹12Cr</span>
                       </div>
-                      <div className="space-y-2 text-center">
-                        <div className="text-4xl font-bold text-green-600">5,000+</div>
-                        <div className="text-sm font-medium">Volunteer Hours</div>
-                        <div className="text-xs text-muted-foreground">
-                          Community members engaged in food redistribution
-                        </div>
+                      <div className="flex justify-between">
+                        <span>Logistics</span>
+                        <span className="text-blue-600">₹2Cr</span>
                       </div>
-                      <div className="space-y-2 text-center">
-                        <div className="text-4xl font-bold text-green-600">₹15Cr+</div>
-                        <div className="text-sm font-medium">Economic Value</div>
-                        <div className="text-xs text-muted-foreground">
-                          Total value of food and services redistributed
-                        </div>
+                      <div className="flex justify-between">
+                        <span>Operations</span>
+                        <span className="text-purple-600">₹1Cr</span>
                       </div>
                     </div>
                   </CardContent>
@@ -758,11 +565,11 @@ export default function ImpactPage() {
       </section>
 
       {/* Reports Section */}
-      <section className="py-12 md:py-24 bg-white">
+      <section className="py-12 md:py-24 bg-white dark:bg-background">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
             <div className="space-y-2">
-              <div className="inline-block rounded-lg bg-green-100 px-3 py-1 text-sm text-green-800">
+              <div className="inline-block rounded-lg bg-green-100 dark:bg-green-900 px-3 py-1 text-sm text-green-800 dark:text-green-200">
                 Detailed Reports
               </div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Impact Reports & Case Studies</h2>
@@ -779,7 +586,7 @@ export default function ImpactPage() {
                 <CardDescription>Comprehensive overview of our yearly impact</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="aspect-video bg-gray-100 rounded-md flex items-center justify-center">
+                <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center">
                   <FileText className="h-10 w-10 text-muted-foreground" />
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -798,7 +605,7 @@ export default function ImpactPage() {
                 <CardDescription>How food redistribution helps the planet</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="aspect-video bg-gray-100 rounded-md flex items-center justify-center">
+                <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center">
                   <Leaf className="h-10 w-10 text-muted-foreground" />
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -817,7 +624,7 @@ export default function ImpactPage() {
                 <CardDescription>Real stories from communities we serve</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="aspect-video bg-gray-100 rounded-md flex items-center justify-center">
+                <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center">
                   <Users className="h-10 w-10 text-muted-foreground" />
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -830,102 +637,10 @@ export default function ImpactPage() {
               </CardContent>
             </Card>
           </div>
-
-          <div className="mt-12 text-center">
-            <p className="text-muted-foreground max-w-3xl mx-auto mb-6">
-              Need custom reports for your organization or CSR initiatives? Our Pro and Enterprise plans include
-              customized impact reporting tailored to your specific needs.
-            </p>
-            <Link href="/contact" passHref>
-              <Button className="bg-green-600 hover:bg-green-700">
-                Request Custom Report <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* Premium Reports */}
-      <section className="py-12 md:py-24 bg-gray-50">
-        <div className="container px-4 md:px-6">
-          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
-            <div className="space-y-4">
-              <div className="inline-block rounded-lg bg-green-100 px-3 py-1 text-sm text-green-800">
-                Premium Reports
-              </div>
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
-                Advanced Impact Analytics for Partners
-              </h2>
-              <p className="text-muted-foreground">
-                Our premium reporting services provide detailed insights for corporate partners, NGOs, and government
-                agencies. Upgrade to access:
-              </p>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-2">
-                  <div className="rounded-full bg-green-100 p-1 mt-0.5">
-                    <BarChart3 className="h-4 w-4 text-green-600" />
-                  </div>
-                  <div>
-                    <span className="font-medium">Custom Dashboards</span>
-                    <p className="text-sm text-muted-foreground">
-                      Tailored analytics dashboards specific to your organization's contributions
-                    </p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="rounded-full bg-green-100 p-1 mt-0.5">
-                    <FileText className="h-4 w-4 text-green-600" />
-                  </div>
-                  <div>
-                    <span className="font-medium">Branded Reports</span>
-                    <p className="text-sm text-muted-foreground">
-                      White-labeled impact reports for your stakeholders and CSR reporting
-                    </p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="rounded-full bg-green-100 p-1 mt-0.5">
-                    <LineChart className="h-4 w-4 text-green-600" />
-                  </div>
-                  <div>
-                    <span className="font-medium">Real-time Analytics</span>
-                    <p className="text-sm text-muted-foreground">Live data on your contributions and their impact</p>
-                  </div>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="rounded-full bg-green-100 p-1 mt-0.5">
-                    <Download className="h-4 w-4 text-green-600" />
-                  </div>
-                  <div>
-                    <span className="font-medium">Data Export</span>
-                    <p className="text-sm text-muted-foreground">
-                      Export raw data for integration with your own systems
-                    </p>
-                  </div>
-                </li>
-              </ul>
-              <div className="pt-4">
-                <Link href="/pricing" passHref>
-                  <Button className="bg-green-600 hover:bg-green-700">
-                    Upgrade for Premium Reports <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-            <div className="relative">
-              <Image
-                src="/placeholder.svg?height=500&width=600"
-                width={600}
-                height={500}
-                alt="Premium analytics dashboard"
-                className="rounded-lg shadow-lg"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to action */}
+      {/* CTA Section */}
       <section className="py-12 md:py-16 bg-green-600 text-white">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">

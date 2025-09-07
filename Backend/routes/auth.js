@@ -134,7 +134,7 @@ router.post('/login',
  */
 router.get('/me', auth(true), async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-passwordHash');
+    const user = await User.findById(req.user.id).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -163,7 +163,7 @@ router.put('/profile',
         req.user.id,
         { $set: updates },
         { new: true, runValidators: true }
-      ).select('-passwordHash');
+      ).select('-password');
 
       if (!user) {
         return res.status(404).json({ message: 'User not found' });

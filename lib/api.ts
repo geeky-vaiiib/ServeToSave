@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
 // API Configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
 // Create axios instance
 const api = axios.create({
@@ -44,15 +44,13 @@ api.interceptors.response.use(
 
 // Types
 export interface User {
-  id: string;
-  name: string;
+  _id: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  role: 'donor' | 'ngo' | 'admin' | 'volunteer';
-  isVerified: boolean;
-  subscription?: {
-    plan: string;
-    isActive: boolean;
-  };
+  role: 'donor' | 'ngo' | 'admin';
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Donation {

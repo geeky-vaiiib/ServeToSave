@@ -91,8 +91,7 @@ EMAIL_SERVICE=gmail
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password
 
-# API Keys
-GOOGLE_MAPS_API_KEY=your-google-maps-api-key
+# API Keys (Optional)
 OPENAI_API_KEY=your-openai-api-key
 ```
 
@@ -122,8 +121,7 @@ nano .env.local
 **Required Frontend Environment Variables:**
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
-NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your-google-maps-api-key
+NEXT_PUBLIC_API_URL=http://localhost:5001/api
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 

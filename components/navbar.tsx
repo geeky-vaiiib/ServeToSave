@@ -27,8 +27,20 @@ const Navbar = () => {
       path: "/map",
     },
     {
+      name: "Impact",
+      path: "/impact",
+    },
+    {
+      name: "Logistics",
+      path: "/logistics",
+    },
+    {
       name: "About",
       path: "/about",
+    },
+    {
+      name: "Contact",
+      path: "/contact",
     },
   ]
 

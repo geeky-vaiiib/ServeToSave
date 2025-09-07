@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Building, Mail, MapPin, Phone } from "lucide-react"
+import { Building, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -41,30 +41,7 @@ export default function ContactPage() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="rounded-full bg-green-100 dark:bg-green-900 p-2">
-                  <Phone className="h-5 w-5 text-green-600 dark:text-green-400" />
-                </div>
-                <div>
-                  <h3 className="font-medium">Phone</h3>
-                  <p className="text-muted-foreground">+91 98765 43210</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="rounded-full bg-green-100 dark:bg-green-900 p-2">
-                  <MapPin className="h-5 w-5 text-green-600 dark:text-green-400" />
-                </div>
-                <div>
-                  <h3 className="font-medium">Headquarters</h3>
-                  <p className="text-muted-foreground">Siddaganga Institute of Technology</p>
-                  <p className="text-muted-foreground">B.H. Road, Tumkur - 572103</p>
-                  <p className="text-muted-foreground">Karnataka, India</p>
-                </div>
-              </div>
-            </div>
+
             <div className="flex flex-col items-center text-center space-y-4">
               <div className="flex items-center space-x-3">
                 <div className="rounded-full bg-green-100 dark:bg-green-900 p-2">

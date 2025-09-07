@@ -20,7 +20,7 @@ const auth = (required = true) => {
 
       try {
         const payload = verifyAccessToken(token);
-        const user = await User.findById(payload.id).select('-passwordHash');
+        const user = await User.findById(payload.id).select('-password');
 
         if (!user) {
           return res.status(401).json({ message: 'User not found' });

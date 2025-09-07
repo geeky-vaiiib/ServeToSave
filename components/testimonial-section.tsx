@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
-import { ChevronLeft, ChevronRight, Star } from "lucide-react"
+import { ChevronLeft, ChevronRight, Star, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
@@ -98,13 +98,9 @@ const TestimonialSection = () => {
                       </div>
                       <p className="mb-6 text-muted-foreground">{testimonial.content}</p>
                       <div className="flex items-center gap-4">
-                        <Image
-                          src={testimonial.avatar || "/placeholder.svg"}
-                          alt={testimonial.name}
-                          width={50}
-                          height={50}
-                          className="rounded-full"
-                        />
+                        <div className="w-[50px] h-[50px] bg-gradient-to-br from-blue-100 to-purple-200 dark:from-blue-900/20 dark:to-purple-800/20 rounded-full flex items-center justify-center">
+                          <User className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                        </div>
                         <div>
                           <p className="font-semibold">{testimonial.name}</p>
                           <p className="text-sm text-muted-foreground">{testimonial.role}</p>

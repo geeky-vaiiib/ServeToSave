@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Award, BarChart, Clock, Globe, Heart, Leaf, Shield, Users } from "lucide-react"
+import { ArrowRight, Award, BarChart, Clock, Globe, Heart, Leaf, Shield, TrendingUp, User, Users, Utensils } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
@@ -165,14 +165,8 @@ export default function AboutPage() {
 
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div className="flex flex-col items-center text-center">
-              <div className="mb-4 overflow-hidden rounded-full">
-                <Image
-                  src="/placeholder.svg?height=200&width=200"
-                  width={200}
-                  height={200}
-                  alt="Vaibhav J P"
-                  className="object-cover"
-                />
+              <div className="mb-4 overflow-hidden rounded-full w-[200px] h-[200px] bg-gradient-to-br from-blue-100 to-purple-200 dark:from-blue-900/20 dark:to-purple-800/20 flex items-center justify-center">
+                <User className="h-20 w-20 text-blue-600 dark:text-blue-400" />
               </div>
               <h3 className="text-xl font-bold">Vaibhav J P</h3>
               <p className="text-sm text-green-600 mb-2">Lead Developer</p>
@@ -181,14 +175,8 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="flex flex-col items-center text-center">
-              <div className="mb-4 overflow-hidden rounded-full">
-                <Image
-                  src="/placeholder.svg?height=200&width=200"
-                  width={200}
-                  height={200}
-                  alt="Kritika"
-                  className="object-cover"
-                />
+              <div className="mb-4 overflow-hidden rounded-full w-[200px] h-[200px] bg-gradient-to-br from-green-100 to-blue-200 dark:from-green-900/20 dark:to-blue-800/20 flex items-center justify-center">
+                <User className="h-20 w-20 text-green-600 dark:text-green-400" />
               </div>
               <h3 className="text-xl font-bold">Kritika</h3>
               <p className="text-sm text-green-600 mb-2">UI/UX Designer</p>
@@ -197,14 +185,8 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="flex flex-col items-center text-center">
-              <div className="mb-4 overflow-hidden rounded-full">
-                <Image
-                  src="/placeholder.svg?height=200&width=200"
-                  width={200}
-                  height={200}
-                  alt="Monisha"
-                  className="object-cover"
-                />
+              <div className="mb-4 overflow-hidden rounded-full w-[200px] h-[200px] bg-gradient-to-br from-purple-100 to-pink-200 dark:from-purple-900/20 dark:to-pink-800/20 flex items-center justify-center">
+                <User className="h-20 w-20 text-purple-600 dark:text-purple-400" />
               </div>
               <h3 className="text-xl font-bold">Monisha</h3>
               <p className="text-sm text-green-600 mb-2">Backend Developer</p>
@@ -213,14 +195,8 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="flex flex-col items-center text-center">
-              <div className="mb-4 overflow-hidden rounded-full">
-                <Image
-                  src="/placeholder.svg?height=200&width=200"
-                  width={200}
-                  height={200}
-                  alt="K Chandan Jaysimha"
-                  className="object-cover"
-                />
+              <div className="mb-4 overflow-hidden rounded-full w-[200px] h-[200px] bg-gradient-to-br from-orange-100 to-red-200 dark:from-orange-900/20 dark:to-red-800/20 flex items-center justify-center">
+                <User className="h-20 w-20 text-orange-600 dark:text-orange-400" />
               </div>
               <h3 className="text-xl font-bold">K Chandan Jaysimha</h3>
               <p className="text-sm text-green-600 mb-2">AI Integration Specialist</p>
@@ -650,13 +626,27 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="relative">
-              <Image
-                src="/placeholder.svg?height=500&width=600"
-                width={600}
-                height={500}
-                alt="Impact visualization"
-                className="rounded-lg shadow-lg"
-              />
+              <div className="w-full max-w-[600px] h-[500px] bg-gradient-to-br from-green-100 to-blue-200 dark:from-green-900/20 dark:to-blue-800/20 rounded-lg shadow-lg flex items-center justify-center">
+                <div className="text-center p-8">
+                  <div className="flex justify-center mb-6">
+                    <div className="relative">
+                      <div className="flex items-center gap-6">
+                        <div className="text-center">
+                          <TrendingUp className="h-16 w-16 text-green-600 dark:text-green-400 mx-auto mb-2" />
+                          <p className="text-sm text-green-700 dark:text-green-300 font-medium">Growing Impact</p>
+                        </div>
+                        <ArrowRight className="h-8 w-8 text-gray-600 dark:text-gray-400" />
+                        <div className="text-center">
+                          <Heart className="h-16 w-16 text-red-600 dark:text-red-400 mx-auto mb-2" />
+                          <p className="text-sm text-red-700 dark:text-red-300 font-medium">Lives Changed</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">Our Impact</h3>
+                  <p className="text-gray-700 dark:text-gray-300">Measuring success through community transformation</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -23,9 +23,11 @@ app.use('/api/', limiter);
 // CORS configuration
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production'
-    ? ['https://your-frontend-domain.vercel.app']
-    : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3001', 'http://127.0.0.1:3001', 'http://localhost:3002', 'http://127.0.0.1:3002'],
+    ? ['https://serve-to-save.vercel.app']
+    : ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
@@ -38,11 +40,15 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI, {
+const DEFAULT_MONGODB_URI = 'mongodb+srv://1si23is117_db_user:jayashree2805@cluster0.ocnxfdy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const mongoUri = process.env.MONGODB_URI || DEFAULT_MONGODB_URI;
+
+mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  dbName: process.env.MONGODB_DB_NAME || 'serve-to-save',
 })
-.then(() => console.log("✅ MongoDB connected successfully"))
+.then(() => console.log("✅ MongoDB connected successfully", { dbName: mongoose.connection.name }))
 .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 // Routes

@@ -202,13 +202,12 @@ export default function ForRestaurantsPage() {
           <div className="mx-auto grid max-w-5xl gap-8 py-12 md:grid-cols-3">
             <Card className="flex flex-col">
               <div className="relative">
-                <Image
-                  src="/placeholder.svg?height=200&width=400"
-                  width={400}
-                  height={200}
-                  alt="Restaurant 1"
-                  className="rounded-t-lg object-cover w-full h-48"
-                />
+                <div className="w-full h-48 bg-gradient-to-br from-orange-100 to-yellow-200 dark:from-orange-900/20 dark:to-yellow-800/20 rounded-t-lg flex items-center justify-center">
+                  <div className="text-center">
+                    <Utensils className="h-12 w-12 text-orange-600 dark:text-orange-400 mx-auto mb-2" />
+                    <p className="text-sm text-orange-700 dark:text-orange-300 font-medium">Golden Spoon</p>
+                  </div>
+                </div>
                 <Badge className="absolute top-3 right-3 bg-green-600">Featured Partner</Badge>
               </div>
               <CardHeader>
@@ -642,13 +641,32 @@ export default function ForRestaurantsPage() {
         <div className="container px-4 md:px-6">
           <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
             <div className="relative order-2 lg:order-1">
-              <Image
-                src="/placeholder.svg?height=500&width=600"
-                width={600}
-                height={500}
-                alt="Impact dashboard"
-                className="rounded-lg shadow-lg"
-              />
+              <div className="w-full max-w-[600px] h-[500px] bg-gradient-to-br from-blue-100 to-green-200 dark:from-blue-900/20 dark:to-green-800/20 rounded-lg shadow-lg flex items-center justify-center">
+                <div className="text-center p-8">
+                  <div className="flex justify-center mb-6">
+                    <div className="relative">
+                      <div className="flex items-center gap-6">
+                        <div className="text-center">
+                          <Utensils className="h-12 w-12 text-orange-600 dark:text-orange-400 mx-auto mb-2" />
+                          <p className="text-sm text-orange-700 dark:text-orange-300">Restaurant</p>
+                        </div>
+                        <ArrowRight className="h-6 w-6 text-gray-600 dark:text-gray-400" />
+                        <div className="text-center">
+                          <BarChart className="h-12 w-12 text-blue-600 dark:text-blue-400 mx-auto mb-2" />
+                          <p className="text-sm text-blue-700 dark:text-blue-300">Analytics</p>
+                        </div>
+                        <ArrowRight className="h-6 w-6 text-gray-600 dark:text-gray-400" />
+                        <div className="text-center">
+                          <Award className="h-12 w-12 text-green-600 dark:text-green-400 mx-auto mb-2" />
+                          <p className="text-sm text-green-700 dark:text-green-300">Impact</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">Impact Dashboard</h3>
+                  <p className="text-gray-700 dark:text-gray-300">Track your restaurant's contribution to the community</p>
+                </div>
+              </div>
             </div>
             <div className="space-y-4 order-1 lg:order-2">
               <div className="inline-block rounded-lg bg-green-100 px-3 py-1 text-sm text-green-800">

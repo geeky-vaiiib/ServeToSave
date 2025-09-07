@@ -37,13 +37,18 @@ export default function ForCorporatesPage() {
               </div>
             </div>
             <div className="mx-auto flex w-full items-center justify-center lg:justify-end">
-              <Image
-                src="/placeholder.svg?height=400&width=600"
-                width={600}
-                height={400}
-                alt="Corporate CSR dashboard"
-                className="rounded-lg object-cover shadow-xl"
-              />
+              <div className="relative w-full max-w-[600px] h-[400px] bg-gradient-to-br from-blue-100 to-purple-200 dark:from-blue-900/20 dark:to-purple-800/20 rounded-lg shadow-xl flex items-center justify-center">
+                <div className="text-center p-8">
+                  <div className="flex justify-center mb-4">
+                    <div className="relative">
+                      <Building className="h-24 w-24 text-blue-600 dark:text-blue-400" />
+                      <Award className="h-8 w-8 text-purple-600 dark:text-purple-400 absolute -top-2 -right-2" />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-blue-800 dark:text-blue-200 mb-2">Corporate CSR</h3>
+                  <p className="text-blue-700 dark:text-blue-300">Driving social impact through partnerships</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,13 +1,18 @@
 const jwt = require('jsonwebtoken');
 
+const ACCESS_SECRET = process.env.JWT_SECRET || 'dev_access_secret_please_change';
+const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'dev_refresh_secret_please_change';
+const ACCESS_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
+const REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
+
 /**
  * Generate access token
  * @param {Object} payload - User payload { id, role }
  * @returns {string} JWT token
  */
 function generateAccessToken(payload) {
-  return jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN || '24h'
+  return jwt.sign(payload, ACCESS_SECRET, {
+    expiresIn: ACCESS_EXPIRES_IN
   });
 }
 
@@ -17,8 +22,8 @@ function generateAccessToken(payload) {
  * @returns {string} JWT refresh token
  */
 function generateRefreshToken(payload) {
-  return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
-    expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d'
+  return jwt.sign(payload, REFRESH_SECRET, {
+    expiresIn: REFRESH_EXPIRES_IN
   });
 }
 
@@ -28,7 +33,7 @@ function generateRefreshToken(payload) {
  * @returns {Object} Decoded payload
  */
 function verifyAccessToken(token) {
-  return jwt.verify(token, process.env.JWT_SECRET);
+  return jwt.verify(token, ACCESS_SECRET);
 }
 
 /**
@@ -37,7 +42,7 @@ function verifyAccessToken(token) {
  * @returns {Object} Decoded payload
  */
 function verifyRefreshToken(token) {
-  return jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+  return jwt.verify(token, REFRESH_SECRET);
 }
 
 /**

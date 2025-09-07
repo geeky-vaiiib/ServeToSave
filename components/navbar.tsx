@@ -10,10 +10,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useAuth } from "@/lib/auth-context"
 
-const Navbar = () => {
+export default function Navbar() {
+  const { theme, setTheme } = useTheme()
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
   const pathname = usePathname()
-  const { theme, setTheme } = useTheme()
   const { user, logout } = useAuth()
 
   // Base routes available to all users
@@ -268,5 +268,3 @@ const Navbar = () => {
     </header>
   )
 }
-
-export default Navbar

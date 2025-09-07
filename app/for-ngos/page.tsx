@@ -37,13 +37,18 @@ export default function ForNGOsPage() {
               </div>
             </div>
             <div className="mx-auto flex w-full items-center justify-center lg:justify-end">
-              <Image
-                src="/placeholder.svg?height=400&width=500"
-                width={500}
-                height={400}
-                alt="NGO using Serve To Save India platform"
-                className="rounded-lg object-cover shadow-xl"
-              />
+              <div className="relative w-full max-w-[500px] h-[400px] bg-gradient-to-br from-green-100 to-blue-200 dark:from-green-900/20 dark:to-blue-800/20 rounded-lg shadow-xl flex items-center justify-center">
+                <div className="text-center p-8">
+                  <div className="flex justify-center mb-4">
+                    <div className="relative">
+                      <Heart className="h-24 w-24 text-green-600 dark:text-green-400" />
+                      <Users className="h-8 w-8 text-blue-600 dark:text-blue-400 absolute -top-2 -right-2" />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-green-800 dark:text-green-200 mb-2">NGO Platform</h3>
+                  <p className="text-green-700 dark:text-green-300">Empowering organizations to serve communities</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -327,13 +332,27 @@ export default function ForNGOsPage() {
               </div>
             </div>
             <div className="flex items-center justify-center">
-              <Image
-                src="/placeholder.svg?height=400&width=600"
-                width={600}
-                height={400}
-                alt="Impact dashboard"
-                className="rounded-lg shadow-lg"
-              />
+              <div className="w-full max-w-[600px] h-[400px] bg-gradient-to-br from-purple-100 to-green-200 dark:from-purple-900/20 dark:to-green-800/20 rounded-lg shadow-lg flex items-center justify-center">
+                <div className="text-center p-8">
+                  <div className="flex justify-center mb-6">
+                    <div className="relative">
+                      <div className="flex items-center gap-4">
+                        <div className="text-center">
+                          <BarChart className="h-12 w-12 text-purple-600 dark:text-purple-400 mx-auto mb-2" />
+                          <p className="text-sm text-purple-700 dark:text-purple-300">Analytics</p>
+                        </div>
+                        <ArrowRight className="h-6 w-6 text-gray-600 dark:text-gray-400" />
+                        <div className="text-center">
+                          <Award className="h-12 w-12 text-green-600 dark:text-green-400 mx-auto mb-2" />
+                          <p className="text-sm text-green-700 dark:text-green-300">Impact</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">Impact Dashboard</h3>
+                  <p className="text-gray-700 dark:text-gray-300">Track your organization's community impact</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -50,13 +50,18 @@ export default function PartnershipsPage() {
               </div>
             </div>
             <div className="mx-auto flex w-full items-center justify-center lg:justify-end">
-              <Image
-                src="/placeholder.svg?height=400&width=600"
-                width={600}
-                height={400}
-                alt="Strategic partnership illustration"
-                className="rounded-lg object-cover shadow-xl"
-              />
+              <div className="relative w-full max-w-[600px] h-[400px] bg-gradient-to-br from-green-100 to-blue-200 dark:from-green-900/20 dark:to-blue-800/20 rounded-lg shadow-xl flex items-center justify-center">
+                <div className="text-center p-8">
+                  <div className="flex justify-center mb-4">
+                    <div className="relative">
+                      <Users className="h-24 w-24 text-green-600 dark:text-green-400" />
+                      <Heart className="h-8 w-8 text-red-600 dark:text-red-400 absolute -top-2 -right-2" />
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-green-800 dark:text-green-200 mb-2">Strategic Partnerships</h3>
+                  <p className="text-green-700 dark:text-green-300">Building bridges for greater impact</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -552,13 +557,9 @@ export default function PartnershipsPage() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <Image
-                    src="/placeholder.svg?height=60&width=60"
-                    width={60}
-                    height={60}
-                    alt="Tata Consultancy Services"
-                    className="rounded-full"
-                  />
+                  <div className="w-[60px] h-[60px] bg-gradient-to-br from-blue-100 to-purple-200 dark:from-blue-900/20 dark:to-purple-800/20 rounded-full flex items-center justify-center">
+                    <Building className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                  </div>
                   <div>
                     <h3 className="font-bold">Tata Consultancy Services</h3>
                     <p className="text-sm text-muted-foreground">CSR Partner</p>
@@ -576,13 +577,9 @@ export default function PartnershipsPage() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <Image
-                    src="/placeholder.svg?height=60&width=60"
-                    width={60}
-                    height={60}
-                    alt="Porter Logistics"
-                    className="rounded-full"
-                  />
+                  <div className="w-[60px] h-[60px] bg-gradient-to-br from-green-100 to-yellow-200 dark:from-green-900/20 dark:to-yellow-800/20 rounded-full flex items-center justify-center">
+                    <TrendingUp className="h-8 w-8 text-green-600 dark:text-green-400" />
+                  </div>
                   <div>
                     <h3 className="font-bold">Porter Logistics</h3>
                     <p className="text-sm text-muted-foreground">Logistics Partner</p>
@@ -599,13 +596,9 @@ export default function PartnershipsPage() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <Image
-                    src="/placeholder.svg?height=60&width=60"
-                    width={60}
-                    height={60}
-                    alt="Ministry of Food Processing"
-                    className="rounded-full"
-                  />
+                  <div className="w-[60px] h-[60px] bg-gradient-to-br from-orange-100 to-red-200 dark:from-orange-900/20 dark:to-red-800/20 rounded-full flex items-center justify-center">
+                    <Shield className="h-8 w-8 text-orange-600 dark:text-orange-400" />
+                  </div>
                   <div>
                     <h3 className="font-bold">Ministry of Food Processing</h3>
                     <p className="text-sm text-muted-foreground">Government Partner</p>

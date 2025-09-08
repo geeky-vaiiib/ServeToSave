@@ -1,10 +1,18 @@
-Serve To Save India
+# Serve To Save India 🇮🇳
 
-Serve To Save India is a food redistribution platform that connects donors with NGOs and communities in need. It leverages AI and modern web technologies to reduce food waste and fight hunger.
+A modern, comprehensive food redistribution platform that connects food donors with NGOs and communities in need. Built with Next.js 14, featuring a clean design system with light/dark themes and role-based dashboards.
 
-Features
+## 🌟 Key Features
 
-Smart Food Donation System: Simple forms for restaurants, hotels, and individuals to donate surplus food
+- **Smart Food Donation System**: Streamlined donation process for restaurants, corporates, and individuals
+- **NGO Request Management**: Efficient food request system for verified NGOs
+- **Real-time Matching**: Intelligent matching system based on location, quantity, and urgency
+- **Interactive Map**: Live map showing nearby donations and requests with filtering
+- **Impact Analytics**: Comprehensive dashboards showing meals served, CO₂ saved, and community impact
+- **Role-based Dashboards**: Separate dashboards for Donors, NGOs, and Corporates
+- **Modern UI/UX**: Glassmorphism design with light/dark theme support
+- **Mobile-First**: Fully responsive design optimized for all devices
+- **Secure Authentication**: JWT-based auth with Google OAuth integration
 
 NGO Request Management: Streamlined process for NGOs to request food for their beneficiaries
 

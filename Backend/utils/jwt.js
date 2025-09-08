@@ -1,8 +1,13 @@
 const jwt = require('jsonwebtoken');
 
-const ACCESS_SECRET = process.env.JWT_SECRET || 'dev_access_secret_please_change';
-const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'dev_refresh_secret_please_change';
-const ACCESS_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
+const crypto = require('crypto');
+
+// Generate secure secrets if not provided in environment
+const generateSecret = () => crypto.randomBytes(64).toString('hex');
+
+const ACCESS_SECRET = process.env.JWT_SECRET || generateSecret();
+const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || generateSecret();
+const ACCESS_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '15m'; // Shorter expiry for access tokens
 const REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
 
 /**

@@ -1,9 +1,15 @@
 "use client"
 
+import { useState } from "react"
 import { useAuth } from "@/lib/auth-context"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Plus, Utensils, Users, BarChart3, Clock, CheckCircle, AlertCircle, Heart } from "lucide-react"
 import Link from "next/link"
 
@@ -51,6 +57,15 @@ export default function DashboardPage() {
 }
 
 function DonorDashboard() {
+  const [isNewDonationOpen, setIsNewDonationOpen] = useState(false)
+
+  const handleDonationSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Handle donation submission here
+    console.log("Donation submitted")
+    setIsNewDonationOpen(false)
+  }
+
   return (
     <div className="space-y-8">
       {/* Stats Cards */}
@@ -65,7 +80,7 @@ function DonorDashboard() {
             <p className="text-xs text-muted-foreground">+2 from last month</p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Meals Served</CardTitle>
@@ -76,7 +91,7 @@ function DonorDashboard() {
             <p className="text-xs text-muted-foreground">+120 from last month</p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">CO₂ Saved</CardTitle>
@@ -87,7 +102,7 @@ function DonorDashboard() {
             <p className="text-xs text-muted-foreground">Environmental impact</p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Donations</CardTitle>
@@ -107,10 +122,66 @@ function DonorDashboard() {
             <CardTitle>Recent Donations</CardTitle>
             <CardDescription>Your latest food donations and their status</CardDescription>
           </div>
-          <Button className="bg-gradient-to-r from-green-500 to-emerald-600">
-            <Plus className="mr-2 h-4 w-4" />
-            New Donation
-          </Button>
+          <Dialog open={isNewDonationOpen} onOpenChange={setIsNewDonationOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-gradient-to-r from-green-500 to-emerald-600">
+                <Plus className="mr-2 h-4 w-4" />
+                New Donation
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Create New Donation</DialogTitle>
+                <DialogDescription>
+                  Fill in the details of your food donation to help us match it with those in need.
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleDonationSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="food-type">Food Type</Label>
+                  <Input id="food-type" placeholder="e.g., Vegetable Curry, Rice, Bread" required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="quantity">Quantity (servings)</Label>
+                  <Input id="quantity" type="number" placeholder="e.g., 50" required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="category">Category</Label>
+                  <Select required>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select food category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="cooked">Cooked Food</SelectItem>
+                      <SelectItem value="raw">Raw Ingredients</SelectItem>
+                      <SelectItem value="packaged">Packaged Food</SelectItem>
+                      <SelectItem value="bakery">Bakery Items</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="expiry">Available Until</Label>
+                  <Input id="expiry" type="datetime-local" required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="location">Pickup Location</Label>
+                  <Input id="location" placeholder="Enter your address" required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="notes">Additional Notes</Label>
+                  <Textarea id="notes" placeholder="Any special instructions or dietary information" />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button type="button" variant="outline" onClick={() => setIsNewDonationOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button type="submit" className="bg-gradient-to-r from-green-500 to-emerald-600">
+                    Create Donation
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -140,6 +211,15 @@ function DonorDashboard() {
 }
 
 function NGODashboard() {
+  const [isNewRequestOpen, setIsNewRequestOpen] = useState(false)
+
+  const handleRequestSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Handle request submission here
+    console.log("Request submitted")
+    setIsNewRequestOpen(false)
+  }
+
   return (
     <div className="space-y-8">
       {/* Stats Cards */}
@@ -154,7 +234,7 @@ function NGODashboard() {
             <p className="text-xs text-muted-foreground">+3 from last month</p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Meals Received</CardTitle>
@@ -165,7 +245,7 @@ function NGODashboard() {
             <p className="text-xs text-muted-foreground">+80 from last month</p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">People Fed</CardTitle>
@@ -176,7 +256,7 @@ function NGODashboard() {
             <p className="text-xs text-muted-foreground">Community impact</p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Requests</CardTitle>
@@ -196,10 +276,66 @@ function NGODashboard() {
             <CardTitle>Food Requests</CardTitle>
             <CardDescription>Your recent food requests and their status</CardDescription>
           </div>
-          <Button className="bg-gradient-to-r from-purple-500 to-pink-600">
-            <Plus className="mr-2 h-4 w-4" />
-            New Request
-          </Button>
+          <Dialog open={isNewRequestOpen} onOpenChange={setIsNewRequestOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-gradient-to-r from-purple-500 to-pink-600">
+                <Plus className="mr-2 h-4 w-4" />
+                New Request
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Create New Food Request</DialogTitle>
+                <DialogDescription>
+                  Submit a request for food to help feed your community members.
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleRequestSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="request-type">Food Type Needed</Label>
+                  <Input id="request-type" placeholder="e.g., Any cooked food, Breakfast items" required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="people-count">Number of People</Label>
+                  <Input id="people-count" type="number" placeholder="e.g., 50" required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="urgency">Urgency Level</Label>
+                  <Select required>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select urgency level" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low">Low - Within a week</SelectItem>
+                      <SelectItem value="medium">Medium - Within 2-3 days</SelectItem>
+                      <SelectItem value="high">High - Within 24 hours</SelectItem>
+                      <SelectItem value="urgent">Urgent - Immediate need</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="needed-by">Needed By</Label>
+                  <Input id="needed-by" type="datetime-local" required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="delivery-location">Delivery Location</Label>
+                  <Input id="delivery-location" placeholder="Enter your organization address" required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="request-notes">Additional Information</Label>
+                  <Textarea id="request-notes" placeholder="Dietary restrictions, special requirements, etc." />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button type="button" variant="outline" onClick={() => setIsNewRequestOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button type="submit" className="bg-gradient-to-r from-purple-500 to-pink-600">
+                    Submit Request
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">

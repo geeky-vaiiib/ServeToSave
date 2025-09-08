@@ -11,11 +11,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAuth } from "@/lib/auth-context"
 import { useRouter } from "next/navigation"
+import { useToast } from "@/hooks/use-toast"
 
 export default function AuthPage() {
+  const { toast } = useToast()
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const { login, register } = useAuth()
+  const { login, signup } = useAuth()
   const router = useRouter()
 
   const [loginData, setLoginData] = useState({
@@ -36,9 +38,18 @@ export default function AuthPage() {
     setIsLoading(true)
     try {
       await login(loginData.email, loginData.password)
+      toast({
+        title: "Success",
+        description: "Successfully logged in!",
+        variant: "default",
+      })
       router.push("/dashboard")
-    } catch (error) {
-      console.error("Login failed:", error)
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to login. Please try again.",
+        variant: "destructive",
+      })
     } finally {
       setIsLoading(false)
     }
@@ -48,10 +59,19 @@ export default function AuthPage() {
     e.preventDefault()
     setIsLoading(true)
     try {
-      await register(registerData)
+      await signup(registerData)
+      toast({
+        title: "Success",
+        description: "Account created successfully!",
+        variant: "default",
+      })
       router.push("/dashboard")
-    } catch (error) {
-      console.error("Registration failed:", error)
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to create account. Please try again.",
+        variant: "destructive",
+      })
     } finally {
       setIsLoading(false)
     }

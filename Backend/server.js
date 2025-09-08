@@ -7,10 +7,33 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5002;
 
 // Security middleware
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'", process.env.FRONTEND_URL || "http://localhost:3000"],
+      frameSrc: ["'none'"],
+      objectSrc: ["'none'"]
+    }
+  },
+  crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+
+// Additional security headers
+app.use((req, res, next) => {
+  res.setHeader('Permissions-Policy', 'geolocation=(), camera=(), microphone=()');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
+});
 
 // Rate limiting
 const limiter = rateLimit({
@@ -24,9 +47,9 @@ app.use('/api/', limiter);
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production'
     ? ['https://serve-to-save.vercel.app']
-    : ['http://localhost:3000', 'http://127.0.0.1:3000'],
+    : ['http://localhost:3000', 'http://localhost:3001', 'http://127.0.0.1:3000', 'http://127.0.0.1:3001'],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 200
 };
@@ -40,16 +63,29 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB connection
-const DEFAULT_MONGODB_URI = 'mongodb+srv://1si23is117_db_user:jayashree2805@cluster0.ocnxfdy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
-const mongoUri = process.env.MONGODB_URI || DEFAULT_MONGODB_URI;
+const mongoUri = process.env.MONGODB_URI;
+if (!mongoUri) {
+  throw new Error('MONGODB_URI environment variable is not set');
+}
 
-mongoose.connect(mongoUri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  dbName: process.env.MONGODB_DB_NAME || 'serve-to-save',
-})
-.then(() => console.log("✅ MongoDB connected successfully", { dbName: mongoose.connection.name }))
-.catch((err) => console.error("❌ MongoDB connection error:", err));
+async function connectToDatabase() {
+  try {
+    await mongoose.connect(mongoUri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      dbName: process.env.MONGODB_DB_NAME || 'serve-to-save',
+      serverSelectionTimeoutMS: 10000, // Increased timeout to 10s
+      retryWrites: true,
+      w: 'majority'
+    });
+    console.log("✅ MongoDB Atlas connected successfully", { dbName: mongoose.connection.name });
+  } catch (error) {
+    console.error("❌ MongoDB connection failed:", error.message);
+    process.exit(1); // Exit if we can't connect to the database
+  }
+}
+
+connectToDatabase();
 
 // Routes
 const donationRoutes = require('./routes/donations');

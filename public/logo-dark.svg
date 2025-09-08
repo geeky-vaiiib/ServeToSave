@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="30" cy="30" r="25" fill="#22c55e" opacity="0.2"/>
+  
+  <!-- Food bowl -->
+  <path d="M15 25 C15 20, 20 15, 30 15 C40 15, 45 20, 45 25 L45 35 C45 40, 40 45, 30 45 C20 45, 15 40, 15 35 Z" fill="#22c55e"/>
+  
+  <!-- Heart in bowl -->
+  <path d="M25 22 C25 20, 27 18, 30 21 C33 18, 35 20, 35 22 C35 25, 30 30, 30 30 C30 30, 25 25, 25 22 Z" fill="#ffffff"/>
+  
+  <!-- India flag colors accent -->
+  <rect x="48" y="25" width="3" height="10" fill="#ff9933"/>
+  <rect x="48" y="35" width="3" height="5" fill="#ffffff"/>
+  <rect x="48" y="40" width="3" height="5" fill="#138808"/>
+  
+  <!-- Text -->
+  <text x="60" y="25" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="bold" fill="#ffffff">Serve To Save</text>
+  <text x="60" y="42" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#d1d5db">India</text>
+</svg>

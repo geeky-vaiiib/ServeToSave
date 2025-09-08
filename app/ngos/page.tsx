@@ -1,10 +1,24 @@
+"use client"
+
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { ArrowRight, Heart, Users, Shield, Clock, CheckCircle, MapPin, BarChart3, Award, Zap, HandHeart, Globe } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { useAuth } from "@/lib/auth-context"
 
 export default function NGOsPage() {
+  const router = useRouter()
+  const { isAuthenticated } = useAuth()
+
+  const handleJoinClick = () => {
+    if (isAuthenticated) {
+      router.push("/dashboard")
+    } else {
+      router.push("/login")
+    }
+  }
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -23,7 +37,11 @@ export default function NGOsPage() {
                 Join 500+ verified NGOs already receiving fresh food donations. Simple request process, real-time matching, and reliable supply chain for your beneficiaries.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
-                <Button size="lg" className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white shadow-lg">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white shadow-lg"
+                  onClick={handleJoinClick}
+                >
                   <Heart className="mr-2 h-5 w-5" />
                   Join Our Network
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -324,7 +342,12 @@ export default function NGOsPage() {
               Join 500+ verified NGOs already receiving fresh food donations through our platform.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button size="lg" variant="secondary" className="bg-white text-purple-600 hover:bg-purple-50">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="bg-white text-purple-600 hover:bg-purple-50"
+                onClick={handleJoinClick}
+              >
                 <Heart className="mr-2 h-5 w-5" />
                 Register Your NGO
               </Button>

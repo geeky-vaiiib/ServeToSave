@@ -4,7 +4,8 @@ import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
-import { Menu, Leaf, Sun, Moon, User, LogOut, LayoutDashboard } from "lucide-react"
+import Image from "next/image"
+import { Menu, Sun, Moon, User, LogOut, LayoutDashboard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -32,13 +33,14 @@ export default function Navbar() {
     <header className="fixed top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border/40">
       <div className="container flex h-16 items-center justify-between px-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-green-500 to-emerald-600">
-            <Leaf className="h-5 w-5 text-white" />
-          </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-            Serve To Save India
-          </span>
+        <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
+          <Image
+            src={theme === "dark" ? "/logo-dark.svg" : "/logo-light.svg"}
+            alt="Serve To Save India"
+            width={180}
+            height={50}
+            className="h-10 w-auto"
+          />
         </Link>
 
         {/* Desktop Navigation */}

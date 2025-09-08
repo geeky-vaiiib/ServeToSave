@@ -1,11 +1,33 @@
+"use client"
+
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { ArrowRight, Heart, Leaf, MapPin, TrendingUp, Users, Utensils, Building2, HandHeart, Globe, Award, Shield, Clock, BarChart3 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import ImpactCounter from "@/components/impact-counter"
+import { useAuth } from "@/lib/auth-context"
 
 export default function Home() {
+  const router = useRouter()
+  const { isAuthenticated } = useAuth()
+
+  const handleDonateClick = () => {
+    if (isAuthenticated) {
+      router.push("/dashboard")
+    } else {
+      router.push("/login")
+    }
+  }
+
+  const handleRequestClick = () => {
+    if (isAuthenticated) {
+      router.push("/dashboard")
+    } else {
+      router.push("/login")
+    }
+  }
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -27,12 +49,21 @@ export default function Home() {
               Connect surplus food with communities in need. Our intelligent platform bridges restaurants, corporates, and NGOs to eliminate food waste and fight hunger across India.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button size="lg" className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg"
+                onClick={handleDonateClick}
+              >
                 <Utensils className="mr-2 h-5 w-5" />
                 Donate Food
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button size="lg" variant="outline" className="border-green-200 hover:bg-green-50 dark:border-green-800 dark:hover:bg-green-950/20">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-green-200 hover:bg-green-50 dark:border-green-800 dark:hover:bg-green-950/20"
+                onClick={handleRequestClick}
+              >
                 <HandHeart className="mr-2 h-5 w-5" />
                 Request Food
               </Button>

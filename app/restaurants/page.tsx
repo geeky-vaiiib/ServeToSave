@@ -1,10 +1,24 @@
+"use client"
+
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { ArrowRight, Utensils, TrendingUp, Shield, Clock, Award, CheckCircle, Users, Leaf, BarChart3 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { useAuth } from "@/lib/auth-context"
 
 export default function RestaurantsPage() {
+  const router = useRouter()
+  const { isAuthenticated } = useAuth()
+
+  const handleDonateClick = () => {
+    if (isAuthenticated) {
+      router.push("/dashboard")
+    } else {
+      router.push("/login")
+    }
+  }
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -23,7 +37,11 @@ export default function RestaurantsPage() {
                 Join 1000+ restaurants already making a difference. Donate surplus food, reduce waste, and feed communities while earning tax benefits and CSR recognition.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
-                <Button size="lg" className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white shadow-lg">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white shadow-lg"
+                  onClick={handleDonateClick}
+                >
                   <Utensils className="mr-2 h-5 w-5" />
                   Start Donating
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -211,7 +229,12 @@ export default function RestaurantsPage() {
               Join 1000+ restaurants already reducing waste and feeding communities through our platform.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button size="lg" variant="secondary" className="bg-white text-orange-600 hover:bg-orange-50">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="bg-white text-orange-600 hover:bg-orange-50"
+                onClick={handleDonateClick}
+              >
                 <Utensils className="mr-2 h-5 w-5" />
                 Start Donating Today
               </Button>

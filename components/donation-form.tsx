@@ -5,6 +5,7 @@ import { Calendar, MenuIcon as Restaurant, User, MapPin, Clock, MessageSquare, U
 import { donationsAPI, handleApiError } from "@/lib/api"
 import { useAuth } from "@/lib/auth-context"
 import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/use-toast"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -16,6 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 const DonationForm = () => {
   const { user } = useAuth()
+  const { toast } = useToast()
   const [formStep, setFormStep] = useState(0)
   const [showThankYou, setShowThankYou] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -25,7 +27,7 @@ const DonationForm = () => {
   // Form data state
   const [formData, setFormData] = useState({
     // Donor info
-    name: user?.name || '',
+    name: user ? `${user.firstName} ${user.lastName}` : '',
     email: user?.email || '',
     phone: '',
     businessName: '',
@@ -145,10 +147,23 @@ const DonationForm = () => {
 
       const response = await donationsAPI.create(submitData)
       setDonationId(response.donation._id)
+      
+      toast({
+        title: "Donation Submitted Successfully!",
+        description: "Thank you for your generous donation. We'll match it with a recipient soon.",
+        variant: "default",
+      })
+      
       setShowThankYou(true)
 
     } catch (error) {
-      setError(handleApiError(error))
+      const errorMessage = handleApiError(error);
+      setError(errorMessage);
+      toast({
+        title: "Donation Submission Failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
     } finally {
       setLoading(false)
     }
@@ -294,7 +309,7 @@ const DonationForm = () => {
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="food-type">Food Type</Label>
-                  <Select defaultValue="cooked">
+                  <Select value={formData.foodType} onValueChange={(value) => handleInputChange('foodType', value)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select food type" />
                     </SelectTrigger>
@@ -309,7 +324,7 @@ const DonationForm = () => {
                 </div>
                 <div className="space-y-2">
                   <Label>Diet Type</Label>
-                  <RadioGroup defaultValue="vegetarian">
+                  <RadioGroup value={formData.dietType} onValueChange={(value) => handleInputChange('dietType', value)}>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="vegetarian" id="vegetarian" />
                       <Label htmlFor="vegetarian">Vegetarian</Label>
@@ -326,13 +341,25 @@ const DonationForm = () => {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="quantity">Quantity (serves how many people)</Label>
-                  <Input id="quantity" type="number" placeholder="e.g. 20" />
+                  <Input 
+                    id="quantity" 
+                    type="number" 
+                    placeholder="e.g. 20" 
+                    value={formData.quantity}
+                    onChange={(e) => handleInputChange('quantity', e.target.value)}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="expiry">Best Before</Label>
                   <div className="flex items-center border rounded-md focus-within:ring-1 focus-within:ring-ring">
                     <Clock className="ml-2 h-5 w-5 text-muted-foreground" />
-                    <Input id="expiry" type="datetime-local" className="border-0 focus-visible:ring-0" />
+                    <Input 
+                      id="expiry" 
+                      type="datetime-local" 
+                      className="border-0 focus-visible:ring-0"
+                      value={formData.expiryTime}
+                      onChange={(e) => handleInputChange('expiryTime', e.target.value)}
+                    />
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -343,6 +370,8 @@ const DonationForm = () => {
                       id="description"
                       placeholder="Please provide any additional information"
                       className="border-0 focus-visible:ring-0 min-h-[100px]"
+                      value={formData.description}
+                      onChange={(e) => handleInputChange('description', e.target.value)}
                     />
                   </div>
                 </div>
@@ -361,7 +390,13 @@ const DonationForm = () => {
                   <Label htmlFor="pickup-time">Preferred Pickup Time</Label>
                   <div className="flex items-center border rounded-md focus-within:ring-1 focus-within:ring-ring">
                     <Calendar className="ml-2 h-5 w-5 text-muted-foreground" />
-                    <Input id="pickup-time" type="datetime-local" className="border-0 focus-visible:ring-0" />
+                    <Input 
+                      id="pickup-time" 
+                      type="datetime-local" 
+                      className="border-0 focus-visible:ring-0"
+                      value={formData.pickupTime}
+                      onChange={(e) => handleInputChange('pickupTime', e.target.value)}
+                    />
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -386,19 +421,31 @@ const DonationForm = () => {
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-start space-x-2">
-                      <Checkbox id="terms" />
+                      <Checkbox 
+                        id="terms" 
+                        checked={formData.termsAccepted}
+                        onCheckedChange={(checked) => handleInputChange('termsAccepted', checked)}
+                      />
                       <Label htmlFor="terms" className="text-sm">
                         I confirm that the food I'm donating is safe for consumption and properly stored.
                       </Label>
                     </div>
                     <div className="flex items-start space-x-2">
-                      <Checkbox id="privacy" />
+                      <Checkbox 
+                        id="privacy"
+                        checked={formData.privacyAccepted}
+                        onCheckedChange={(checked) => handleInputChange('privacyAccepted', checked)}
+                      />
                       <Label htmlFor="privacy" className="text-sm">
                         I agree to the platform's terms of service and privacy policy.
                       </Label>
                     </div>
                     <div className="flex items-start space-x-2">
-                      <Checkbox id="updates" />
+                      <Checkbox 
+                        id="updates"
+                        checked={formData.updatesAccepted}
+                        onCheckedChange={(checked) => handleInputChange('updatesAccepted', checked)}
+                      />
                       <Label htmlFor="updates" className="text-sm">
                         I would like to receive impact updates about my donation.
                       </Label>

@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { authAPI, User, getStoredUser, setStoredUser, handleApiError } from './api';
+import { useToast } from '@/hooks/use-toast';
 
 interface AuthContextType {
   user: User | null;
@@ -30,6 +31,7 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     // Check if user is logged in on app start
@@ -66,8 +68,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.setItem('token', response.token);
       setUser(response.user);
       setStoredUser(response.user);
+      
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully logged in.",
+        variant: "default",
+      });
+      
     } catch (error) {
-      throw new Error(handleApiError(error));
+      const errorMessage = handleApiError(error);
+      toast({
+        title: "Login failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
+      throw new Error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -82,8 +97,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.setItem('token', response.token);
       setUser(response.user);
       setStoredUser(response.user);
+      
+      toast({
+        title: "Account created!",
+        description: "Welcome to Serve To Save India!",
+        variant: "default",
+      });
+      
     } catch (error) {
-      throw new Error(handleApiError(error));
+      const errorMessage = handleApiError(error);
+      toast({
+        title: "Registration failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
+      throw new Error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -99,8 +127,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await authAPI.updateProfile(userData);
       setUser(response.user);
       setStoredUser(response.user);
+      
+      toast({
+        title: "Profile updated",
+        description: "Your profile has been successfully updated.",
+        variant: "default",
+      });
+      
     } catch (error) {
-      throw new Error(handleApiError(error));
+      const errorMessage = handleApiError(error);
+      toast({
+        title: "Update failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
+      throw new Error(errorMessage);
     }
   };
 

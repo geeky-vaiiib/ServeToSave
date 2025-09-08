@@ -11,11 +11,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAuth } from "@/lib/auth-context"
 import { useRouter } from "next/navigation"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function AuthPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const { login, register } = useAuth()
+  const { login, signup } = useAuth()
   const router = useRouter()
 
   const [loginData, setLoginData] = useState({
@@ -31,26 +32,64 @@ export default function AuthPage() {
     role: ""
   })
 
+  const { toast } = useToast()
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     try {
       await login(loginData.email, loginData.password)
+      toast({
+        title: "Success",
+        description: "Logged in successfully",
+        variant: "default"
+      })
       router.push("/dashboard")
-    } catch (error) {
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Login failed",
+        variant: "destructive"
+      })
       console.error("Login failed:", error)
     } finally {
       setIsLoading(false)
     }
   }
 
+  const validateRegisterData = (data: typeof registerData) => {
+    if (!data.firstName?.trim()) throw new Error("First name is required")
+    if (!data.lastName?.trim()) throw new Error("Last name is required")
+    if (!data.email?.trim()) throw new Error("Email is required")
+    if (!data.password?.trim()) throw new Error("Password is required")
+    if (!data.role?.trim()) throw new Error("Role is required")
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(data.email)) throw new Error("Invalid email format")
+
+    // Password validation
+    if (data.password.length < 8) throw new Error("Password must be at least 8 characters long")
+  }
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     try {
-      await register(registerData)
+      validateRegisterData(registerData)
+      await signup(registerData)
+      toast({
+        title: "Success",
+        description: "Account created successfully",
+        variant: "default"
+      })
       router.push("/dashboard")
-    } catch (error) {
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Registration failed",
+        variant: "destructive"
+      })
       console.error("Registration failed:", error)
     } finally {
       setIsLoading(false)

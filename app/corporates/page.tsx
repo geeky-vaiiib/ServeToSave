@@ -1,10 +1,24 @@
+"use client"
+
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { ArrowRight, Building2, TrendingUp, Users, Award, Target, BarChart3, Globe, Heart, CheckCircle, Handshake, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { useAuth } from "@/lib/auth-context"
 
 export default function CorporatesPage() {
+  const router = useRouter()
+  const { isAuthenticated } = useAuth()
+
+  const handlePartnershipClick = () => {
+    if (isAuthenticated) {
+      router.push("/dashboard")
+    } else {
+      router.push("/login")
+    }
+  }
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -24,7 +38,11 @@ export default function CorporatesPage() {
                 Partner with us to organize employee food drives, corporate donations, and community impact programs. Measurable CSR outcomes with comprehensive reporting.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
-                <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg"
+                  onClick={handlePartnershipClick}
+                >
                   <Building2 className="mr-2 h-5 w-5" />
                   Start Partnership
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -278,7 +296,12 @@ export default function CorporatesPage() {
               Join leading corporates already making a difference through strategic food donation partnerships.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button size="lg" variant="secondary" className="bg-white text-blue-600 hover:bg-blue-50">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="bg-white text-blue-600 hover:bg-blue-50"
+                onClick={handlePartnershipClick}
+              >
                 <Building2 className="mr-2 h-5 w-5" />
                 Schedule Partnership Call
               </Button>

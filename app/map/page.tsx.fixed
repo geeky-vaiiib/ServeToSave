@@ -1,0 +1,398 @@
+"use client"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Badge } from "@/components/ui/badge"
+import { Filter, Heart, MapPin, Search, Utensils } from "lucide-react"
+import Link from "next/link"
+import dynamic from "next/dynamic"
+
+// Dynamically import the map component to avoid SSR issues
+const LeafletMap = dynamic(() => import('@/components/leaflet-map'), {
+  ssr: false,
+  loading: () => <div className="w-full h-[600px] bg-gray-200 rounded-xl flex items-center justify-center">
+    <p>Loading map...</p>
+  </div>
+})
+
+export default function MapPage() {
+  const [activeFilter, setActiveFilter] = useState("all")
+  const [showFilters, setShowFilters] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [currentLocation, setCurrentLocation] = useState<[number, number] | null>(null)
+  const [selectedMarker, setSelectedMarker] = useState<string | null>(null)
+  const [viewMode, setViewMode] = useState<'map' | 'list'>('map')
+
+  const sampleMarkers = [
+    {
+      id: '1',
+      lat: 28.6139,
+      lng: 77.2090,
+      title: 'Hotel Grand Palace',
+      description: 'Fresh surplus food from wedding event',
+      type: 'donation' as const,
+      quantity: 'Serves 50 people',
+      dietType: 'Vegetarian',
+      expiryTime: '4 hours',
+      postedTime: '30 minutes ago',
+      distance: '2.3 km'
+    },
+    {
+      id: '2',
+      lat: 19.0760,
+      lng: 72.8777,
+      title: 'Hope Foundation',
+      description: 'NGO seeking food for evening meal service',
+      type: 'request' as const,
+      quantity: 'For 30 people',
+      urgency: 'high' as const,
+      dietType: 'Any',
+      postedTime: '1 hour ago',
+      distance: '3.1 km'
+    },
+    {
+      id: '3',
+      lat: 13.0827,
+      lng: 80.2707,
+      title: 'Green Restaurant',
+      description: 'Daily surplus food available - Mixed cuisine',
+      type: 'donation' as const
+    },
+    {
+      id: '4',
+      lat: 22.5726,
+      lng: 88.3639,
+      title: 'Care Center',
+      description: 'Food needed for elderly residents',
+      type: 'request' as const
+    }
+  ]
+
+  const filteredMarkers = activeFilter === 'all'
+    ? sampleMarkers
+    : sampleMarkers.filter(marker => marker.type === activeFilter)
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-r from-green-900 to-green-800 py-12 md:py-16">
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="container px-4 md:px-6 relative z-10">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center text-white">
+            <div className="space-y-2 max-w-3xl mx-auto">
+              <div className="inline-block rounded-lg bg-green-500/20 backdrop-blur-sm px-3 py-1 text-sm">
+                Interactive Map
+              </div>
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                Find Food Donations Near You
+              </h1>
+              <p className="text-gray-200 md:text-xl/relaxed">
+                Connect with local food donors and recipients in real-time. Make a difference in your community.
+              </p>
+              <div className="flex items-center justify-center gap-4 pt-4">
+                <Button
+                  size="lg"
+                  className="bg-green-600 hover:bg-green-700"
+                  onClick={() => {
+                    if ('geolocation' in navigator) {
+                      navigator.geolocation.getCurrentPosition((position) => {
+                        setCurrentLocation([position.coords.latitude, position.coords.longitude])
+                      })
+                    }
+                  }}
+                >
+                  <MapPin className="mr-2 h-5 w-5" />
+                  Use My Location
+                </Button>
+                <Link href="/donate">
+                  <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
+                    Make a Donation
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Search Bar */}
+        <div className="container px-4 md:px-6 relative z-10 mt-8">
+          <div className="max-w-2xl mx-auto">
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Input
+                  placeholder="Search by location or food type..."
+                  className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <Button
+                variant="outline"
+                className="text-white border-white/20 hover:bg-white/10"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                <Filter className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="outline"
+                className="text-white border-white/20 hover:bg-white/10"
+                onClick={() => setViewMode(viewMode === 'map' ? 'list' : 'map')}
+              >
+                {viewMode === 'map' ? 'List View' : 'Map View'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Content Section */}
+      <section className="py-8 md:py-12 bg-gray-50 flex-1">
+        <div className="container px-4 md:px-6">
+          {showFilters && (
+            <div className="mb-8 p-6 bg-white rounded-lg shadow-lg">
+              <div className="grid md:grid-cols-4 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="type">Type</Label>
+                  <Select defaultValue="all">
+                    <SelectTrigger id="type">
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Types</SelectItem>
+                      <SelectItem value="donation">Donations</SelectItem>
+                      <SelectItem value="request">Requests</SelectItem>
+                      <SelectItem value="completed">Completed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="food-type">Food Type</Label>
+                  <Select defaultValue="all">
+                    <SelectTrigger id="food-type">
+                      <SelectValue placeholder="Select food type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Types</SelectItem>
+                      <SelectItem value="cooked">Cooked Food</SelectItem>
+                      <SelectItem value="raw">Raw Ingredients</SelectItem>
+                      <SelectItem value="packaged">Packaged Food</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="distance">Distance</Label>
+                  <Select defaultValue="10">
+                    <SelectTrigger id="distance">
+                      <SelectValue placeholder="Select distance" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="5">Within 5 km</SelectItem>
+                      <SelectItem value="10">Within 10 km</SelectItem>
+                      <SelectItem value="20">Within 20 km</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="time">Available Within</Label>
+                  <Select defaultValue="24">
+                    <SelectTrigger id="time">
+                      <SelectValue placeholder="Select time frame" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="3">3 hours</SelectItem>
+                      <SelectItem value="6">6 hours</SelectItem>
+                      <SelectItem value="12">12 hours</SelectItem>
+                      <SelectItem value="24">24 hours</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-8">
+            {/* Sidebar */}
+            <div className="space-y-6 lg:h-[calc(100vh-300px)] lg:overflow-y-auto">
+              <div className="sticky top-0 z-10 bg-gray-50 pb-4">
+                <Tabs defaultValue="nearby" className="w-full">
+                  <TabsList className="w-full grid grid-cols-2">
+                    <TabsTrigger value="nearby">Nearby</TabsTrigger>
+                    <TabsTrigger value="recent">Recent</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+
+              <div className="space-y-4">
+                {filteredMarkers.map((marker) => (
+                  <Card
+                    key={marker.id}
+                    className={`cursor-pointer transition-shadow hover:shadow-md ${
+                      selectedMarker === marker.id ? 'ring-2 ring-green-500' : ''
+                    }`}
+                    onClick={() => setSelectedMarker(marker.id)}
+                  >
+                    <CardHeader className="p-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <CardTitle className="text-base">{marker.title}</CardTitle>
+                          <CardDescription className="text-xs">
+                            {marker.distance && marker.postedTime ? `${marker.distance} • ${marker.postedTime}` : ''}
+                          </CardDescription>
+                        </div>
+                        <Badge
+                          className={
+                            marker.type === 'donation'
+                              ? 'bg-green-100 text-green-800 hover:bg-green-100'
+                              : marker.type === 'request'
+                              ? 'bg-blue-100 text-blue-800 hover:bg-blue-100'
+                              : 'bg-gray-100 text-gray-800 hover:bg-gray-100'
+                          }
+                        >
+                          {marker.type.charAt(0).toUpperCase() + marker.type.slice(1)}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-0">
+                      <div className="text-sm space-y-2">
+                        <p>{marker.description}</p>
+                        {marker.quantity && (
+                          <p>
+                            <span className="font-medium">Quantity:</span> {marker.quantity}
+                          </p>
+                        )}
+                        {marker.dietType && (
+                          <p>
+                            <span className="font-medium">Diet Type:</span> {marker.dietType}
+                          </p>
+                        )}
+                        {'urgency' in marker && marker.urgency && (
+                          <p>
+                            <span className="font-medium">Urgency:</span>{' '}
+                            <Badge
+                              variant="outline"
+                              className={
+                                marker.urgency === 'high'
+                                  ? 'text-red-600 border-red-200'
+                                  : marker.urgency === 'medium'
+                                  ? 'text-yellow-600 border-yellow-200'
+                                  : 'text-green-600 border-green-200'
+                              }
+                            >
+                              {marker.urgency.charAt(0).toUpperCase() + marker.urgency.slice(1)}
+                            </Badge>
+                          </p>
+                        )}
+                        {marker.expiryTime && (
+                          <p>
+                            <span className="font-medium">Available for:</span> {marker.expiryTime}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mt-4 flex justify-end gap-2">
+                        <Button variant="outline" size="sm">
+                          View Details
+                        </Button>
+                        <Button
+                          size="sm"
+                          className={
+                            marker.type === 'donation'
+                              ? 'bg-green-600 hover:bg-green-700'
+                              : 'bg-blue-600 hover:bg-blue-700'
+                          }
+                        >
+                          {marker.type === 'donation' ? 'Request' : 'Donate'}
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Map */}
+            <div className="relative lg:h-[calc(100vh-300px)] rounded-xl overflow-hidden border shadow-md bg-white">
+              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 bg-white rounded-full shadow-md p-1">
+                <div className="flex space-x-1">
+                  <Button
+                    variant={activeFilter === "all" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setActiveFilter("all")}
+                    className={`rounded-full ${
+                      activeFilter === "all" ? "bg-green-600 hover:bg-green-700" : ""
+                    }`}
+                  >
+                    All
+                  </Button>
+                  <Button
+                    variant={activeFilter === "donation" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setActiveFilter("donation")}
+                    className={`rounded-full ${
+                      activeFilter === "donation" ? "bg-green-600 hover:bg-green-700" : ""
+                    }`}
+                  >
+                    <Utensils className="h-4 w-4 mr-1" />
+                    Donations
+                  </Button>
+                  <Button
+                    variant={activeFilter === "request" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setActiveFilter("request")}
+                    className={`rounded-full ${
+                      activeFilter === "request" ? "bg-green-600 hover:bg-green-700" : ""
+                    }`}
+                  >
+                    <Heart className="h-4 w-4 mr-1" />
+                    Requests
+                  </Button>
+                </div>
+              </div>
+
+              <LeafletMap
+                markers={filteredMarkers}
+                height="100%"
+                center={currentLocation || undefined}
+                zoom={currentLocation ? 13 : 6}
+                showUserLocation={!!currentLocation}
+                onMarkerClick={(marker) => setSelectedMarker(marker.id)}
+                className="z-0"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to action */}
+      <section className="py-8 md:py-12 bg-green-600 text-white">
+        <div className="container px-4 md:px-6">
+          <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-bold tracking-tighter">Ready to Make a Difference?</h2>
+              <p className="mx-auto max-w-[700px]">
+                Join our platform to donate or request food and help us reduce waste while feeding those in need.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 min-[400px]:flex-row">
+              <Link href="/donate" passHref>
+                <Button size="lg" className="bg-white text-green-600 hover:bg-gray-100">
+                  Donate Food
+                </Button>
+              </Link>
+              <Link href="/request" passHref>
+                <Button size="lg" variant="outline" className="text-white border-white hover:bg-green-700">
+                  Request Food
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  )
+}

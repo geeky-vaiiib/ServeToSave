@@ -5,6 +5,7 @@ import "./globals.css"
 import "leaflet/dist/leaflet.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AuthProvider } from "@/lib/auth-context"
+import { Providers } from "./providers"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 
@@ -26,15 +27,19 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    // Set a default html class to match the client-side theme provider's initial class
+    // This avoids a hydration mismatch where the client adds `class="light"` after mount.
+    <html lang="en" className="light">
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light">
           <AuthProvider>
-            <div className="flex min-h-screen flex-col">
-              <Navbar />
-              <main className="flex-1 pt-16">{children}</main>
-              <Footer />
-            </div>
+            <Providers>
+              <div className="flex min-h-screen flex-col">
+                <Navbar />
+                <main className="flex-1 pt-16">{children}</main>
+                <Footer />
+              </div>
+            </Providers>
           </AuthProvider>
         </ThemeProvider>
       </body>

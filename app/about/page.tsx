@@ -1,6 +1,12 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Award, BarChart, Clock, Globe, Heart, Leaf, Shield, TrendingUp, User, Users, Utensils } from "lucide-react"
+import { 
+  ArrowRight, Award, BarChart, Clock, Globe, Heart, 
+  Leaf, Shield, TrendingUp, User, Users, Utensils,
+  Hand, Sprout, Share2, MapPin
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
